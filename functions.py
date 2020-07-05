@@ -32,7 +32,7 @@ def filter_data(json,arr):
     
 
 
-def write_file(filename, data):
+def write_csv_file(filename, data):
   
   csv_file = open(filename,"w")
   csvwriter = csv.writer(csv_file)
@@ -46,6 +46,8 @@ def write_file(filename, data):
     csvwriter.writerow(item.values())
 
   csv_file.close()
+
+
 
 # raw_data = get_data(HANAMIGAWA_CITY)
 # required_fields = ["Type","TradePrice","Area"]
