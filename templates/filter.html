@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- <form id="filter-form" class="mt-5" action="" method="POST">
+  {{ form.hidden_tag() }}
+
+  {% for field in form
+         if field.widget.input_type != 'hidden' %}
+
+  <p>
+    {{ field(class_="form-control") }}
+
+    {% for error in field.errors %}
+    {{ error }}
+    {% endfor %}
+  </p>
+
+  {% endfor %}
+  <button id="filter-form-submit" type="submit" class="btn btn-primary btn-block">Predict Price</button>
+</form>
+<div id="price-prediction"></div> -->
+
+
+
+<form>
+  <div class="form-group">
+    <select id="floor_layout" class="form-control">
+      <option selected>Choose a type...</option>
+      <option>Pre-owned Condominiums, etc.</option>
+      <option>Residential Land(Land Only)</option>
+      <option>Residential Land(Land and Building)</option>
+    </select>
+  </div>
+  <div class="form-row">
+
+    <div class="form-group col-md-6">
+      <input type="text" class="form-control" id="area" placeholder="Input area">
+    </div>
+    <div class="form-group col-md-6">
+      <select id="floor_layout" class="form-control">
+        <option selected>Layout...</option>
+        <option>1DK</option>
+        <option>2LDK</option>
+        <option>3K</option>
+        <option>4LDK</option>
+        <option>5LDK</option>
+      </select>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary btn-block">Predict Price</button>
+</form>
+
+
+{% endblock %}

@@ -1,9 +1,11 @@
 import os
 import requests
-from flask import Flask, render_template, request,jsonify
+from flask import Flask, render_template, request,jsonify, redirect, session
 from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db
+from forms import SearchForm, FilterForm
 import utils
+
 
 app = Flask(__name__)
 
@@ -19,15 +21,41 @@ connect_db(app)
 
 ############################################################
 
-@app.route("/")
+@app.route("/", methods=["GET","POST"])
 def index():
-  return render_template("home.html")
+  form = SearchForm()
 
-@app.route("/load_model")
-def train_model():
-  city_code = request.get_json()["city_code"]
+  if form.validate_on_submit():
+        city_code = form.city_code.data
+        # model = Query.query.filter_by(city_code=city_code).first()
+        # if not model:
+        model =  utils.load_model(city_code)
+        session["city_code"] = city_code
+        return redirect("/filter")
+  else:
+        return render_template(
+            "home.html", form=form)
+
+@app.route("/filter")
+def filter():
+
+  city_code = session["city_code"]
   model = utils.load_model(city_code)
+  form = FilterForm()
+  
+  form.type_.choices = model.model.type_
+  form.floor_plan.choices = model.model.floor_plan
+
+  return render_template("filter.html",form=form )
+
+
+@app.route("/load_model", methods=["POST"])
+def train_model():
+  # city_code = request.get_json()["city_code"]
+  # model = utils.load_model(city_code)
   return jsonify(code = "ok")
+
+
 
 @app.route("/api/predict_price")
 def predict_price_api():
@@ -41,3 +69,4 @@ def predict_price_api():
   prediction = model.model.predict_price(type_,area,floor_plan)
   
   return jsonify(data= prediction)
+

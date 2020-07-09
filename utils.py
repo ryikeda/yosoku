@@ -22,4 +22,18 @@ def load_model(city_code):
   return model 
 
 
+def load_model_from_API(city_code):
+  
+  print("api call ***********************************")
+  dataset = Dataset(city_code)
+  model = PricePredictionModel(dataset)
+
+  model = Query(city_code=model.city_code, model=model)
+
+  db.session.add(model)
+  db.session.commit()
+
+  print("model loaded ***********************************")
+  return model 
+
 

@@ -16,7 +16,7 @@ class Dataset:
         }
 
         self.clean_data = self.clean_data()
-
+       
     def get_transaction_data(self):
 
         resp = requests.get(
@@ -56,6 +56,10 @@ class Dataset:
         #Create dummies
         type_dummies = pd.get_dummies(data.Type)
         floor_plan_dummies = pd.get_dummies(data.FloorPlan)
+
+        #Set type_ and floor plan properties
+        self.type_ = [type_ for type_ in type_dummies.columns]
+        self.floor_plan = [floor_plan for floor_plan in floor_plan_dummies.columns]
 
         data = pd.concat([type_dummies,data,floor_plan_dummies], axis="columns")
         
@@ -113,6 +117,8 @@ class Dataset:
 
         return df_out
 
+    
+
 class PricePredictionModel:
     def __init__(self,dataset):
         self.dataset = pd.DataFrame(dataset.clean_data)
@@ -120,6 +126,8 @@ class PricePredictionModel:
         self.X = self.dataset.drop(["TradePrice"],axis="columns")
         self.y = self.dataset.TradePrice
         self.lr = self.train_data()
+        self.type_ = dataset.type_
+        self.floor_plan = dataset.floor_plan
 
     def train_data(self):
         lr = LinearRegression()

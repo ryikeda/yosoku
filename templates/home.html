@@ -1,9 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
-<form class="mt-5">
-  <div class="form-group">
-    <input type="text" class="form-control" id="search" placeholder="type city name or state name ...">
-  </div>
+<form id="search-form" class="mt-5" action="/" method="POST">
+  {{ form.hidden_tag() }}
+
+  {% for field in form
+         if field.widget.input_type != 'hidden' %}
+
+  <p>
+    {{ field(class_="form-control", placeholder="Search for a city ...") }}
+
+    {% for error in field.errors %}
+    {{ error }}
+    {% endfor %}
+  </p>
+
+  {% endfor %}
+  <div id="match-list" class="list-group"></div>
 </form>
-<div id="match-list"></div>
+
+<div id="loading-icon" class="hide fa-3x">
+  <i class="fas fa-spinner fa-pulse"></i>
+</div>
 {% endblock %}
