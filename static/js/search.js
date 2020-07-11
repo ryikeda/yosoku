@@ -8,10 +8,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const matchList = document.getElementById("match-list")
   const loadingIcon = document.getElementById("loading-icon")
 
-  const filterForm = document.getElementById("filter-form")
-  const filterFormSubmit = document.getElementById("filter-form-submit")
-  const pricePrediction = document.getElementById("price-prediction")
-
   // Search cities and states json file
   const searchCity = async searchText => {
     const res = await fetch("/static/resources/all_cities.json")
@@ -68,9 +64,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // Event listeners
 
   searchBox.addEventListener("input", () => searchCity(searchBox.value))
-  filterFormSubmit.addEventListener("submit", () => predictPrice(e))
-
-
 
   // Functions
 
@@ -83,14 +76,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
     searchForm.submit()
   }
-
-  function predictPrice() {
-    e.preventDefault()
-    console.dir(filterForm)
-
-  }
-
-
-
-
 });
