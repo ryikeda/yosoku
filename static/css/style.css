@@ -19,3 +19,13 @@
   width:100%;
   position:absolute;
 }
+#search-div{
+  position: relative;
+}
+
+#match-list{
+  position: absolute;
+  top: 36.5px;
+  left: 0;
+  right: 0; 
+}

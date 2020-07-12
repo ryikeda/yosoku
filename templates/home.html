@@ -1,28 +1,137 @@
 {% extends 'base.html' %}
 {% block title %}| Home {% endblock %}
 {% block content %}
-<form id="search-form" class="mt-5" action="/" method="POST">
-  {{ form.hidden_tag() }}
 
-  {% for field in form
-         if field.widget.input_type != 'hidden' %}
+<div class="container mt-5">
+  <form id="search-form" action="/" method="POST">
+    {{ search_form.hidden_tag() }}
+    <div class="row">
+      <div id="search-div" class="input-group">
 
-  <p>
-    {{ field(class_="form-control", placeholder="Search for a city ...") }}
+        {% for field in search_form
+          if field.widget.input_type != 'hidden' %}
 
-    {% for error in field.errors %}
-    {{ error }}
-    {% endfor %}
-  </p>
+        {{ field(class_="form-control", placeholder="Search for a city ...") }}
 
-  {% endfor %}
-  <div id="match-list" class="list-group"></div>
-</form>
+        {% for error in field.errors %}
+        {{ error }}
+        {% endfor %}
+        {% endfor %}
 
-
-<div id="loading-icon" class="hide fa-3x">
-  <i class="fas fa-spinner fa-pulse"></i>
+        <div id="match-list"></div>
+        <div class="input-group-append">
+          <button id="filter-btn" type="button" class="btn btn-outline-info" data-toggle="modal"
+            data-target="#filter-modal">
+            Filter
+          </button>
+        </div>
+      </div>
+  </form>
 </div>
+<div class="row">
+  <table class="table table-hover mt-5">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Location</th>
+        <th scope="col">Type</th>
+        <th scope="col">Area m2</th>
+        <th scope="col">Layout</th>
+        <th scope="col">Price Estimate</th>
+        <!-- <th scope="col">Comment</th>
+          <th scope="col">Actions</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Shinagawa</td>
+        <td>Pre-owned Condominiums, etc.</td>
+        <td>120</td>
+        <td>2LDK</td>
+        <td>￥25,000,000</td>
+        <!-- <td>Far away from work</td>
+          <td><a href="#"><i class="fas fa-edit"></i></a> <a href="#"><i class="fas fa-trash-alt"></i></a> </td> -->
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Shinagawa</td>
+        <td>Pre-owned Condominiums, etc.</td>
+        <td>150</td>
+        <td>4LDK</td>
+        <td>￥30,000,000</td>
+        <!-- <td>-</td>
+          <td><a href="#"><i class="fas fa-edit"></i></a> <a href="#"><i class="fas fa-trash-alt"></i></a> </td> -->
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>Nagoya</td>
+        <td>Residential Land(Land and Building)</td>
+        <td>150</td>
+        <td>-</td>
+        <td>￥23,000,000</td>
+        <!-- <td></td>
+          <td><a href="#"><i class="fas fa-edit"></i></a> <a href="#"><i class="fas fa-trash-alt"></i></a> </td> -->
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+
+<div class="map-responsive mt-5">
+  <iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=Shinagawa"
+    frameborder="0" style="border:0" allowfullscreen></iframe>
+</div>
+
+
+
+<!-- Filter Modal -->
+<div class="modal fade" id="filter-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="filterModalLabel">Filters</h5>
+        <button type="button" class="close" data-dismiss="modal">
+        </button>
+      </div>
+      <div id="filter-modal-body" class="modal-body">
+        <p id="filter-modal-text">
+          Search for a city first
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-info">Predict Price</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Filter Modal -->
+
+<!-- Signup Modal -->
+
+<div class="modal fade" id="signupModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="filterModalLabel">Sign Up</h5>
+        <button type="button" class="close" data-dismiss="modal">
+        </button>
+      </div>
+      <div id="modal-body" class="modal-body">
+        <p id="modal-text">
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-info">Predict Price</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Signup Modal -->
+
 {% endblock %}
 {% block scripts %}
 <script type="text/javascript" src="/static/js/search.js"></script>

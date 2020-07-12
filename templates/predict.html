@@ -23,7 +23,23 @@
 <div class="container mt-5">
   <div class="row">
     <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search for a city ... ">
+      <form id="search-form" class="mt-4" action="/" method="POST">
+        {{ search_form.hidden_tag() }}
+
+        {% for field in search_form
+               if field.widget.input_type != 'hidden' %}
+
+        <p>
+          {{ field(class_="form-control", placeholder="Search for a city ...") }}
+
+          {% for error in field.errors %}
+          {{ error }}
+          {% endfor %}
+        </p>
+
+        {% endfor %}
+        <div id="match-list" class="list-group"></div>
+      </form>
       <div class="input-group-append">
         <button class="btn btn-outline-info" type="button" data-toggle="modal"
           data-target="#exampleModal">Filters</button>

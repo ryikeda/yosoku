@@ -11,34 +11,39 @@
 
 </head>
 
-
-<nav class="navbar fixed-top navbar-dark bg-dark">
+<nav class="navbar navbar-dark bg-dark">
   <a class="navbar-brand mx-5" href="#">
-    <img src="/static/img/icon_static.png" width="30" height="30" class="d-inline-block align-top" alt="">
+    <img src="/static/img/icon_static.png" width="25" height="25" class="d-inline-block align-center" alt="">
   </a>
   <span class="navbar-text mx-5">
     Real Estate Price Predictions in Japan
   </span>
   <span class="navbar-text mx-5 btn">
     <a href="#">Login</a> /
-    <a href="#">Sign Up</a>
+    <a id="signup-btn" class="nav-link" data-toggle="modal" data-target="#signupModal">
+      Signup
+    </a>
   </span>
   </div>
-</nav>
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">Navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
-    aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
 </nav>
 
 <body>
   {% block content%}
   {% endblock %}
-  {% block scripts %}
-  {% endblock scripts %}
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script type="text/javascript" src="/static/js/search.js"></script>
+  <script src="https://kit.fontawesome.com/97a0c30ba9.js" crossorigin="anonymous"></script>
+  <!-- Scripts -->
 </body>
 <footer class="page-footer bg-dark">
   <div class="footer-copyright text-center py-3 bg-dark text-white">© 2020 Copyright:
