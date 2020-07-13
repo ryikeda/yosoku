@@ -1,12 +1,15 @@
 import os
 import requests
-from flask import Flask, render_template, request,jsonify, redirect, session
+from flask import Flask, render_template, request,jsonify, redirect, session, make_response, flash, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_wtf.csrf import CSRFProtect
-from models import connect_db
-from forms import SearchForm, FilterForm, SignupForm
+from models import db, connect_db, User
+from forms import SearchForm, FilterForm, SignupForm, LoginForm
 from flask import send_from_directory
 import utils
+from sqlalchemy.exc import IntegrityError
+
+CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
@@ -38,16 +41,17 @@ def index():
   
   if search_form.validate_on_submit():
         city_code = search_form.city_code.data
+        city_name = search_form.city_name.data
         model =  utils.load_model(city_code)
         session["city_code"] = city_code
 
         filter_form.type_.choices = [(choice,choice) for choice in model.model.type_]
         filter_form.floor_plan.choices = [(floor_plan,floor_plan) for floor_plan in model.model.floor_plan]
 
-        return render_template("filters.html",filter_form=filter_form)
+        return render_template("filters.html",filter_form=filter_form, city_name=city_name)
   else:
         return render_template(
-            "home.html", search_form=search_form, table=SAMPLE_TABLE)
+            "home.html", search_form=search_form)
 
 
 @app.route("/predict", methods=["GET","POST"])
@@ -75,8 +79,6 @@ def filter():
 
 
 
-
-
 @app.route("/api/predict_price", methods=["GET","POST"])
 def predict_price_api():
 
@@ -98,13 +100,62 @@ def favicon():
 
 
 
-@app.route("/signup", methods=["GET", "POST"])
+@app.route("/signup", methods=["GET","POST"])
 def signup():
   """Handle user signup. It creates new user and add to DB
   """
-  singup_form = SignupForm()
+  form = SignupForm()
 
-  if signup_form.validate_on_submit():
-    pass
+  if form.validate_on_submit():
+    try:
+      user = User.signup(username=form.signup_username.data, password=form.signup_password.data,email=form.signup_email.data)
+      db.session.commit()
+
+    except IntegrityError:
+      return render_template("/forms/signup_form.html")
+
+    flash("User Created! Please login.")
+    return render_template('message.html')
+
   else:
-    return render_template("signup_form.html", signup_form=signup_form)
+    return render_template("/forms/auth_form.html", form=form)
+  
+@app.route("/login", methods=["GET","POST"])
+def login():
+  """Handle user loging"""
+  form = LoginForm()
+
+  if form.validate_on_submit():
+    user = User.authenticate(form.login_username.data, form.login_password.data)
+
+    if user:
+      do_login(user) 
+      flash(f"Hello, {user.username}!")
+      return render_template("message.html")
+
+    # Clear form before resending
+    form.login_username.data = ""
+    form.login_password.data = ""
+    flash("Invalid credentials")
+
+  return render_template("/forms/auth_form.html", form=form)
+  
+
+@app.route("/logout")
+def logout():
+  """Handle logout of user"""
+  do_logout()
+  flash("You are logged out!")
+  return render_template("message.html")
+
+
+
+def do_login(user):
+  """Log in user"""
+  session[CURR_USER_KEY] = user.id
+
+
+def do_logout():
+  """Logout user"""
+  if CURR_USER_KEY in session:
+    del session[CURR_USER_KEY]
