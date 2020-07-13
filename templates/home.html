@@ -5,6 +5,7 @@
 <div class="container mt-5">
   <form id="search-form" action="/" method="POST">
     {{ search_form.hidden_tag() }}
+
     <div class="row">
       <div id="search-div" class="input-group">
 
@@ -22,7 +23,7 @@
         <div class="input-group-append">
           <button id="filter-btn" type="button" class="btn btn-outline-info" data-toggle="modal"
             data-target="#filter-modal">
-            Filter
+            Filters
           </button>
         </div>
       </div>
@@ -32,46 +33,42 @@
   <table class="table table-hover mt-5">
     <thead>
       <tr>
-        <th scope="col">#</th>
         <th scope="col">Location</th>
         <th scope="col">Type</th>
         <th scope="col">Area m2</th>
         <th scope="col">Layout</th>
         <th scope="col">Price Estimate</th>
         <!-- <th scope="col">Comment</th>
-          <th scope="col">Actions</th> -->
+        <th scope="col">Actions</th> -->
       </tr>
     </thead>
     <tbody>
       <tr>
-        <th scope="row">1</th>
         <td>Shinagawa</td>
         <td>Pre-owned Condominiums, etc.</td>
         <td>120</td>
         <td>2LDK</td>
         <td>￥25,000,000</td>
         <!-- <td>Far away from work</td>
-          <td><a href="#"><i class="fas fa-edit"></i></a> <a href="#"><i class="fas fa-trash-alt"></i></a> </td> -->
+        <td><a href="#"><i class="fas fa-edit"></i></a> <a href="#"><i class="fas fa-trash-alt"></i></a> </td> -->
       </tr>
       <tr>
-        <th scope="row">2</th>
         <td>Shinagawa</td>
         <td>Pre-owned Condominiums, etc.</td>
         <td>150</td>
         <td>4LDK</td>
         <td>￥30,000,000</td>
         <!-- <td>-</td>
-          <td><a href="#"><i class="fas fa-edit"></i></a> <a href="#"><i class="fas fa-trash-alt"></i></a> </td> -->
+        <td><a href="#"><i class="fas fa-edit"></i></a> <a href="#"><i class="fas fa-trash-alt"></i></a> </td> -->
       </tr>
       <tr>
-        <th scope="row">3</th>
         <td>Nagoya</td>
         <td>Residential Land(Land and Building)</td>
         <td>150</td>
         <td>-</td>
         <td>￥23,000,000</td>
         <!-- <td></td>
-          <td><a href="#"><i class="fas fa-edit"></i></a> <a href="#"><i class="fas fa-trash-alt"></i></a> </td> -->
+        <td><a href="#"><i class="fas fa-edit"></i></a> <a href="#"><i class="fas fa-trash-alt"></i></a> </td> -->
       </tr>
     </tbody>
   </table>
@@ -90,7 +87,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="filterModalLabel">Filters</h5>
+        <h5 class="modal-title">Filters</h5>
         <button type="button" class="close" data-dismiss="modal">
         </button>
       </div>
@@ -98,6 +95,11 @@
         <p id="filter-modal-text">
           Search for a city first
         </p>
+        <div>
+          <p class="text-center"> Training Models</p>
+          <p class="text-center"><img src="/static/img/loading_icon.gif"></p>
+          <p class="text-center"> Please wait!</p>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -108,9 +110,28 @@
 </div>
 <!-- Filter Modal -->
 
-<!-- Signup Modal -->
+<!-- Login Modal -->
+<div class="modal fade" id="login-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Login</h5>
+        <button type="button" class="close" data-dismiss="modal">
+        </button>
+      </div>
+      <div id="login-modal-body" class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button id="login-close-btn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button id="login-btn" type="button" class="btn btn-info">Login</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Login Modal -->
 
-<div class="modal fade" id="signupModal" tabindex="-1" role="dialog">
+<!-- Signup Modal -->
+<div class="modal fade" id="signup-modal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -118,19 +139,39 @@
         <button type="button" class="close" data-dismiss="modal">
         </button>
       </div>
-      <div id="modal-body" class="modal-body">
-        <p id="modal-text">
-        </p>
+      <div id="signup-modal-body" class="modal-body">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-info">Predict Price</button>
+        <button id="signup-close-btn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button id="signup-btn" type="button" class="btn btn-info">Sign Up</button>
       </div>
     </div>
   </div>
 </div>
-
 <!-- Signup Modal -->
+
+<!-- Logout Modal -->
+<div class="modal fade" id="logout-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="filterModalLabel">Logout</h5>
+        <button type="button" class="close" data-dismiss="modal">
+        </button>
+      </div>
+      <div id="logout-modal-body" class="modal-body">
+        <p id="logout-modal-text">
+          Are you sure to logout?
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button id="logout-close-btn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button id="logout-btn" type="button" class="btn btn-info">Logout</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Logout Modal -->
 
 {% endblock %}
 {% block scripts %}
