@@ -1,11 +1,9 @@
-<form id="signup-form" action="/" method="POST">
-  {{ filter_form.hidden_tag() }}
-
-  {% for field in filter_form
+<form id="singup-form" action="/singup" method="POST">
+  {% for field in signup_form
                  if field.widget.input_type != 'hidden' %}
   <div class="form-group">
     <p>
-      {{ field(class_="form-control") }}
+      {{ field(class_="form-control", placeholder=field.label.text) }}
 
       {% for error in field.errors %}
       {{ error }}

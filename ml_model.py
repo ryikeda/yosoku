@@ -117,8 +117,6 @@ class Dataset:
 
         return df_out
 
-    
-
 class PricePredictionModel:
     def __init__(self,dataset):
         self.dataset = pd.DataFrame(dataset.clean_data)

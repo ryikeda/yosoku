@@ -1,16 +1,14 @@
-<form id="filter-form" action="/" method="POST">
-  {{ filter_form.hidden_tag() }}
+<p class="text-center">{{city_name}}</p>
 
-  {% for field in filter_form
+{% for field in filter_form
                  if field.widget.input_type != 'hidden' %}
-  <div class="form-group">
-    <p>
-      {{ field(class_="form-control") }}
+<div class="form-group">
+  <p>
+    {{ field(class_="form-control",placeholder=field.label.text) }}
 
-      {% for error in field.errors %}
-      {{ error }}
-      {% endfor %}
-    </p>
-  </div>
-  {% endfor %}
-</form>
+    {% for error in field.errors %}
+    {{ error }}
+    {% endfor %}
+  </p>
+</div>
+{% endfor %}

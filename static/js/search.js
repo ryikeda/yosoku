@@ -12,6 +12,15 @@ document.addEventListener('DOMContentLoaded', function () {
   const filterModalText = document.getElementById("filter-modal-text")
   const filterBtn = document.getElementById("filter-btn")
 
+  const loginBtn = document.getElementById("login-btn")
+  const signupBtn = document.getElementById("signup-btn")
+
+  const signupUsername = document.getElementById("signup_username")
+  const signupEmail = document.getElementById("signup_email")
+  const signupPassword = document.getElementById("signup_password")
+
+  const signupModalBody = document.getElementById("signup-modal-body")
+
   // Search cities and states json file
   const searchCity = async searchText => {
     const res = await fetch("/static/resources/all_cities.json")
@@ -70,7 +79,9 @@ document.addEventListener('DOMContentLoaded', function () {
   // Event listeners
 
   searchBox.addEventListener("input", () => searchCity(searchBox.value))
-  getResultsTable()
+  loginBtn.addEventListener("click", (e) => submitForm(e))
+  signupBtn.addEventListener("click", (e) => submitForm(e))
+
 
   // Functions
 
@@ -106,10 +117,35 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 
-  async function getResultsTable() {
+  async function submitForm(e) {
+    e.preventDefault()
+
+    const data = {
+      signup_username: signupUsername.value,
+      signup_email: signupEmail.value,
+      signup_password: signupPassword.value,
+    }
+
+    const res = await makeRequest('http://127.0.0.1:5000/signup', data)
 
 
 
+  }
+
+  async function makeRequest(url, data) {
+
+    axios.post(url, data,
+      {
+        headers: {
+          'X-CSRFToken': token.value
+        }
+      }).then((response) => {
+        console.log(response)
+        signupModalBody.innerHTML = response.data
+
+      }, (error) => {
+        console.log(error);
+      });
 
   }
 
