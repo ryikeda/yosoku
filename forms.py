@@ -6,6 +6,7 @@ class SearchForm(FlaskForm):
   """Form for searching cities"""
   search = StringField("search", validators=[InputRequired()])
   city_code = HiddenField("city_code", validators=[InputRequired()])
+  city_name = HiddenField("city_name", validators=[InputRequired()])
 
 class FilterForm(FlaskForm):
   """Form for filtering machine learning models"""
@@ -17,6 +18,12 @@ class FilterForm(FlaskForm):
 class SignupForm(FlaskForm):
   """Form for adding users."""
 
-  username = StringField('Username', validators=[InputRequired()])
-  email = StringField('E-mail', validators=[InputRequired(), Email()])
-  password = PasswordField('Password', validators=[Length(min=6)])
+  signup_username = StringField('Username', validators=[InputRequired()])
+  signup_email = StringField('E-mail', validators=[InputRequired(), Email()])
+  signup_password = PasswordField('Password', validators=[Length(min=6)])
+
+class LoginForm(FlaskForm):
+  """Login form"""
+
+  login_username = StringField('Username', validators=[InputRequired()])
+  login_password = PasswordField('Password', validators=[Length(min=6)])
