@@ -1,0 +1,15 @@
+<form action="" method="POST">
+  {{ form.hidden_tag() }}
+  {% for field in form
+                   if field.widget.input_type != 'hidden' %}
+  <div class="form-group">
+    <p>
+      {{ field(class_="form-control", placeholder=field.label.text) }}
+
+      {% for error in field.errors %}
+      {{ error(class_="text-danger small") }}
+      {% endfor %}
+    </p>
+  </div>
+  {% endfor %}
+</form>
