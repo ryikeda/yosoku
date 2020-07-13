@@ -4,28 +4,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://bootswatch.com/4/yeti/bootstrap.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
   <link rel="stylesheet" href="/static/css/style.css">
   <script src="https://kit.fontawesome.com/97a0c30ba9.js" crossorigin="anonymous"></script>
   <title>Yosoku {% block title%}{% endblock%}</title>
 
 </head>
 
-<nav class="navbar navbar-dark bg-dark">
-  <a class="navbar-brand mx-5" href="#">
-    <img src="/static/img/icon_static.png" width="25" height="25" class="d-inline-block align-center" alt="">
-  </a>
-  <span class="navbar-text mx-5">
-    Real Estate Price Predictions in Japan
-  </span>
-  <span class="navbar-text mx-5 btn">
-    <a href="#">Login</a> /
-    <a id="signup-btn" class="nav-link" data-toggle="modal" data-target="#signupModal">
-      Signup
-    </a>
-  </span>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#"><img src="/static/img/icon_static.png" width="25" height="25"
+        class="d-inline-block align-center" alt=""></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item"></li>
+        <a id="nav-about" class="nav-link text-white">About</a>
+        </li>
+        <li class="nav-item">
+          <a id="nav-login" class="nav-link text-white" data-toggle="modal" data-target="#login-modal">
+            Login</a>
+        </li>
+        <li class="nav-item">
+          <a id="nav-signup" class="nav-link text-white" data-toggle="modal" data-target="#signup-modal">
+            Sign Up</a>
+        </li>
+        <li class="nav-item">
+          <a id="nav-logout" class="nav-link hide" data-toggle="modal" data-target="#logout-modal">
+            (logout)</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
+
+
 
 <body>
   {% block content%}
@@ -41,7 +59,7 @@
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script type="text/javascript" src="/static/js/search.js"></script>
+  <script type="text/javascript" src="/static/js/main.js"></script>
   <script src="https://kit.fontawesome.com/97a0c30ba9.js" crossorigin="anonymous"></script>
   <!-- Scripts -->
 </body>
