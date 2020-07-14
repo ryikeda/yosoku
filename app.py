@@ -26,15 +26,10 @@ connect_db(app)
 
 ############################################################
 
-SAMPLE_TABLE = [
-  {"Location":"Shinagawa", "Type":"Pre-owned Condominiums, etc.", "Area m2":"120", "Layout":"2LDK"},
-  {"Location":"Taito", "Type":"Residential Land(Land and Building)", "Area m2":"150", "Layout":""},
-  {"Location":"Shizuoka", "Type":"Residential Land(Land Only)", "Area m2":"180", "Layout":""}
-]
 
-result = UserQuery(user_id=1, location="Shizuoka", type_="Residential Land(Land Only)", area=180, layout="2LDK", price_estimate=15000000, comment="ackjac")
-db.session.add(result)
-db.session.commit()
+# result = UserQuery(user_id=1, location="Shizuoka", type_="Residential Land(Land Only)", area=180, layout="2LDK", price_estimate=15000000, comment="ackjac")
+# db.session.add(result)
+# db.session.commit()
 
 @app.route("/", methods=["GET","POST"])
 def index():
@@ -55,6 +50,7 @@ def index():
   else:
         return render_template(
             "home.html", search_form=search_form)
+
 
 
 @app.route("/results")
@@ -116,6 +112,7 @@ def signup():
   """Handle user signup. It creates new user and add to DB
   """
   form = SignupForm()
+  btn = {"id":"signup-btn","text":"Sign me up!"}
 
   if form.validate_on_submit():
     try:
@@ -129,12 +126,13 @@ def signup():
     return render_template('message.html')
 
   else:
-    return render_template("/forms/auth_form.html", form=form)
+    return render_template("modal_form.html", form=form , btn=btn)
   
 @app.route("/login", methods=["GET","POST"])
 def login():
   """Handle user loging"""
   form = LoginForm()
+  btn = {"id":"login-btn","text":"Login!"}
 
   if form.validate_on_submit():
     user = User.authenticate(form.login_username.data, form.login_password.data)
@@ -149,7 +147,7 @@ def login():
     form.login_password.data = ""
     flash("Invalid credentials")
 
-  return render_template("/forms/auth_form.html", form=form)
+  return render_template("modal_form.html", form=form, btn=btn )
   
 
 @app.route("/logout")

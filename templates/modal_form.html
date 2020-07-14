@@ -1,0 +1,16 @@
+<form>
+  {% for message in get_flashed_messages() %}
+  <p class="text-center">{{ message }}</p>
+  {% endfor %}
+
+  {% for field in form
+  if field.widget.input_type != 'hidden' %}
+  <div class="form-group">
+    {{  field(class_="form-control", placeholder=field.label.text) }}
+    {% for error in field.errors %}
+    <small class="text-danger ml-2">{{ error }}</small>
+    {% endfor %}
+  </div>
+  {% endfor %}
+  <button id={{btn.id}} class="btn btn-info btn-lg btn-block">{{btn.text}}</button>
+</form>

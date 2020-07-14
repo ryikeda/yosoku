@@ -3,7 +3,6 @@ const BASE_URL = "http://127.0.0.1:5000"
 
 class SignupForm {
   constructor() {
-    this.signupBtn = document.getElementById("signup-btn")
     this.navSignupBtn = document.getElementById("nav-signup")
 
     this.token = document.getElementById("csrf_token").value
@@ -13,7 +12,7 @@ class SignupForm {
     this.signupEmail = document.getElementById("signup_email")
     this.signupPassword = document.getElementById("signup_password")
 
-    this.signupBtn.addEventListener("click", (e) => this.submitForm(e))
+
     this.navSignupBtn.addEventListener("click", () => this.loadForm())
   };
 
@@ -21,10 +20,13 @@ class SignupForm {
 
     axios.get(BASE_URL.concat("/signup")).then((response) => {
       this.signupModalBody.innerHTML = response.data
-      // this.handleResponse(response)
+      this.signupBtn = document.getElementById("signup-btn")
+      this.signupBtn.addEventListener("click", (e) => this.submitForm(e))
     }, (error) => {
       console.log(error);
     });
+
+
   }
 
   async submitForm(e) {
@@ -42,26 +44,21 @@ class SignupForm {
           'X-CSRFToken': this.token
         }
       }).then((response) => {
-        this.handleResponse(response)
+        this.signupModalBody.innerHTML = response.data
+        this.signupBtn = document.getElementById("signup-btn")
+        this.signupBtn.addEventListener("click", (e) => this.submitForm(e))
 
       }, (error) => {
         console.log(error);
       });
   }
 
-  handleResponse(response) {
-    if (response.status === 200) {
-      this.signupModalBody.innerHTML = response.data
-    } else {
-      this.signupModalBody.innerHTML = "<p>User Created. Please login!</p>"
 
-    }
-  }
 }
 
 class LoginForm {
   constructor() {
-    this.loginBtn = document.getElementById("login-btn")
+
     this.navLoginBtn = document.getElementById("nav-login")
     this.navSignupBtn = document.getElementById("nav-signup")
     this.navLogoutBtn = document.getElementById("nav-logout")
@@ -69,7 +66,6 @@ class LoginForm {
     this.loginModalBody = document.getElementById("login-modal-body")
     this.token = document.getElementById("csrf_token").value
 
-    this.loginBtn.addEventListener("click", (e) => this.submitForm(e))
     this.navLoginBtn.addEventListener("click", () => this.loadForm())
   }
 
@@ -77,6 +73,8 @@ class LoginForm {
 
     axios.get(BASE_URL.concat("/login")).then((response) => {
       this.loginModalBody.innerHTML = response.data
+      this.loginBtn = document.getElementById("login-btn")
+      this.loginBtn.addEventListener("click", (e) => this.submitForm(e))
 
     }, (error) => {
       console.log(error);
@@ -97,6 +95,8 @@ class LoginForm {
         }
       }).then((response) => {
         this.loginModalBody.innerHTML = response.data
+        this.loginBtn = document.getElementById("login-btn")
+        this.loginBtn.addEventListener("click", (e) => this.submitForm(e))
         this.navLoginBtn.classList.toggle("hide")
         this.navSignupBtn.classList.toggle("hide")
         this.navLogoutBtn.classList.toggle("hide")
@@ -265,6 +265,8 @@ class ResultsTable {
 
 
 document.addEventListener('DOMContentLoaded', function () {
+
+
   new SignupForm
   new LoginForm
   new SearchForm
