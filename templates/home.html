@@ -4,12 +4,12 @@
 
 <div class="container mt-5">
   <form id="search-form" action="/" method="POST">
-    {{ search_form.hidden_tag() }}
+    {{ form.hidden_tag() }}
 
     <div class="row">
       <div id="search-div" class="input-group">
 
-        {% for field in search_form
+        {% for field in form
           if field.widget.input_type != 'hidden' %}
 
         {{ field(class_="form-control", placeholder="Search for a city ...") }}
@@ -21,10 +21,9 @@
 
         <div id="match-list"></div>
         <div class="input-group-append">
-          <button id="filter-btn" type="button" class="btn btn-outline-info" data-toggle="modal"
-            data-target="#filter-modal">
+          <a id="filter-btn" type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#filter-modal">
             Filters
-          </button>
+          </a>
         </div>
       </div>
   </form>
@@ -53,10 +52,7 @@
           x</button>
       </div>
       <div id="filter-modal-body" class="modal-body">
-        <p id="filter-modal-text">
-          Search for a city first
-        </p>
-        <div id="loading" class="hide">
+        <div id="loading">
           <p class="text-center"> Training Models</p>
           <p class="text-center"><img src="/static/img/loading_icon.gif"></p>
           <p class="text-center"> Please wait!</p>
@@ -121,6 +117,28 @@
   </div>
 </div>
 <!-- Logout Modal -->
+
+<!-- Loading Modal -->
+
+<button id="loading-modal-btn" type="button" class="btn btn-primary hide" data-toggle="modal"
+  data-target="#loading-modal">
+</button>
+
+
+<div class="modal fade" id="loading-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div id="loading">
+          <p class="text-center"> Training Models</p>
+          <p class="text-center"><img src="/static/img/loading_icon.gif"></p>
+          <p class="text-center"> Please wait!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Loading Modal -->
 
 {% endblock %}
 {% block scripts %}

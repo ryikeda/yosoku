@@ -1,5 +1,8 @@
-
 const BASE_URL = "http://127.0.0.1:5000"
+
+
+
+
 
 class SignupForm {
   constructor() {
@@ -146,9 +149,9 @@ class SearchForm {
     this.matchList = document.getElementById("match-list")
     this.token = document.getElementById("csrf_token")
 
-    this.filterModalText = document.getElementById("filter-modal-text")
-    this.filterModalBody = document.getElementById("filter-modal-body")
     this.filterBtn = document.getElementById("filter-btn")
+    this.loadingModalBtn = document.getElementById("loading-modal-btn")
+    this.loadingModal = document.getElementById("loading-modal")
 
     this.searchBox.addEventListener("input", () => this.searchCity(this.searchBox.value))
   }
@@ -210,7 +213,8 @@ class SearchForm {
     }
   }
 
-  handleClick(e, city) {
+  async handleClick(e, city) {
+    e.preventDefault()
     this.searchBox.value = `${city.name} - ${city.state}`;
 
     this.cityCode.value = city.id;
@@ -222,21 +226,23 @@ class SearchForm {
       city_code: this.cityCode.value,
       city_name: this.cityName.value
     }
-    this.filterModalText = "";
-    this.filterBtn.click()
-
-    this.getFilterModal(data)
+    this.loadingModalBtn.click()
     this.searchBox.value = "";
+    setTimeout(() => this.submitForm(data), 3000);
+
+
   }
 
-  async getFilterModal(data) {
+  async submitForm(data) {
+
     axios.post(BASE_URL, data,
       {
         headers: {
           'X-CSRFToken': this.token.value
         }
       }).then((response) => {
-        this.filterModalBody.innerHTML = response.data
+        this.loadingModalBtn.click()
+        this.filterBtn.click()
       }, (error) => {
         console.log(error);
       });
@@ -262,15 +268,37 @@ class ResultsTable {
 
 }
 
+class FilterForm {
+  constructor() {
+    this.filterBtn = document.getElementById("filter-btn")
+    this.filterModalBody = document.getElementById("filter-modal-body")
+
+
+    this.filterBtn.addEventListener("click", () => this.loadForm())
+  }
+
+  async loadForm() {
+
+    axios.get(BASE_URL.concat("/filters")).then((response) => {
+      this.filterModalBody.innerHTML = response.data
+
+    }, (error) => {
+      console.log(error);
+    });
+
+
+  }
+
+}
 
 
 document.addEventListener('DOMContentLoaded', function () {
-
 
   new SignupForm
   new LoginForm
   new SearchForm
   new LogoutForm
   new ResultsTable
+  new FilterForm
 
 })

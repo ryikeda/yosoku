@@ -34,24 +34,43 @@ connect_db(app)
 @app.route("/", methods=["GET","POST"])
 def index():
   
-  search_form = SearchForm()
-  filter_form = FilterForm()
+  form = SearchForm()
   
-  if search_form.validate_on_submit():
-        city_code = search_form.city_code.data
-        city_name = search_form.city_name.data
+  if form.validate_on_submit():
+        city_code = form.city_code.data
+        city_name = form.city_name.data
         model =  utils.load_model(city_code)
         session["city_code"] = city_code
+        session["city_name"] = city_name
 
-        filter_form.type_.choices = [(choice,choice) for choice in model.model.type_]
-        filter_form.floor_plan.choices = [(floor_plan,floor_plan) for floor_plan in model.model.floor_plan]
 
-        return render_template("filters.html",filter_form=filter_form, city_name=city_name)
+        return jsonify(data="ok")
   else:
         return render_template(
-            "home.html", search_form=search_form)
+            "home.html", form=form)
+
+@app.route("/filters", methods=["GET", "POST"])
+def show_filters():
+
+  # # session["city_code"] = "13102"
+  # # session["city_name"] = "Chuo Ward"
+  # session["city_code"] = ""
+  # session["city_name"] = ""
+  city_code = session["city_code"]
+  city_name = session["city_name"]
 
 
+  if city_code and city_name:
+    form = FilterForm()
+    model =  utils.load_model(city_code)
+    btn = {"id":"predict-btn","text":"Predict Price!"}
+    form.type_.choices = [(choice,choice) for choice in model.model.type_]
+    form.floor_plan.choices = [(floor_plan,floor_plan) for floor_plan in model.model.floor_plan]
+
+    return render_template("modal_form.html", form=form, btn=btn, city_name=city_name )
+    
+  else:
+    return render_template("filters_blank.html")
 
 @app.route("/results")
 def get_query_results():

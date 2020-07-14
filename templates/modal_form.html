@@ -1,4 +1,7 @@
 <form>
+  {% if city_name %}
+  <p class="text-center">{{ city_name }}</p>
+  {% endif%}
   {% for message in get_flashed_messages() %}
   <p class="text-center">{{ message }}</p>
   {% endfor %}
