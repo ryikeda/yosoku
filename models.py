@@ -93,4 +93,9 @@ class UserQuery(db.Model):
   ) 
 
   user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="cascade"))
-  query_id = db.Column(db.Text, db.ForeignKey("queries.city_code", ondelete="cascade"))
+  location = db.Column(db.Text, nullable=False)
+  type_ = db.Column(db.Text, nullable=False)
+  area = db.Column(db.Integer, nullable=False)
+  layout = db.Column(db.Text, nullable=False)
+  price_estimate = db.Column(db.Integer, nullable=False)
+  comment = db.Column(db.Text, nullable=False)

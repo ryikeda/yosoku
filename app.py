@@ -3,7 +3,7 @@ import requests
 from flask import Flask, render_template, request,jsonify, redirect, session, make_response, flash, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_wtf.csrf import CSRFProtect
-from models import db, connect_db, User
+from models import db, connect_db, User, UserQuery
 from forms import SearchForm, FilterForm, SignupForm, LoginForm
 from flask import send_from_directory
 import utils
@@ -29,9 +29,12 @@ connect_db(app)
 SAMPLE_TABLE = [
   {"Location":"Shinagawa", "Type":"Pre-owned Condominiums, etc.", "Area m2":"120", "Layout":"2LDK"},
   {"Location":"Taito", "Type":"Residential Land(Land and Building)", "Area m2":"150", "Layout":""},
-  {"Location":"Shizuoka", "Type":"Residential Land(Land Onlya)", "Area m2":"180", "Layout":""}
+  {"Location":"Shizuoka", "Type":"Residential Land(Land Only)", "Area m2":"180", "Layout":""}
 ]
 
+result = UserQuery(user_id=1, location="Shizuoka", type_="Residential Land(Land Only)", area=180, layout="2LDK", price_estimate=15000000, comment="ackjac")
+db.session.add(result)
+db.session.commit()
 
 @app.route("/", methods=["GET","POST"])
 def index():
@@ -52,6 +55,14 @@ def index():
   else:
         return render_template(
             "home.html", search_form=search_form)
+
+
+@app.route("/results")
+def get_query_results():
+
+  results = UserQuery.query.filter_by(user_id=1).all()   
+
+  return render_template("table.html", results=results)      
 
 
 @app.route("/predict", methods=["GET","POST"])

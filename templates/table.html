@@ -1,0 +1,28 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Location</th>
+      <th scope="col">Type</th>
+      <th scope="col">Area m2</th>
+      <th scope="col">Layout</th>
+      <th scope="col">Price Estimate</th>
+      <!-- <th scope="col">Comment</th>
+      <th scope="col">Actions</th> -->
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for result in results %}
+    <tr>
+      <td>{{result.location}}</td>
+      <td>{{result.type_}}</td>
+      <td>{{result.area}}</td>
+      <td>{{result.layout}}</td>
+      <td>{{result.price_estimate}}</td>
+      <!-- <td>{{result.comment}}</td> -->
+      {% endfor %}
+
+      <!-- <td><a href="#"><i class="fas fa-edit"></i></a> <a href="#"><i class="fas fa-trash-alt"></i></a> </td> -->
+    </tr>
+  </tbody>
+</table>

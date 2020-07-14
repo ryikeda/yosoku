@@ -28,8 +28,36 @@
   top: 36.5px;
   left: 0;
   right: 0; 
+  z-index: 11;
 }
 
 .nav-link{
   cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+#results-table {
+  overflow-y: auto;
+  height: 200px;
+}
+
+#results-table table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#results-table th,
+#results-table td {
+  padding: 8px 16px;
+}
+
+#results-table th {
+  position: sticky;
+  top: 0;
+  background: white;
+  border: white;
+  z-index: 10;
 }

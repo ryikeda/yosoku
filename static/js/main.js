@@ -134,7 +134,6 @@ class LogoutForm {
     });
   }
 
-
 }
 
 
@@ -245,6 +244,24 @@ class SearchForm {
 
 }
 
+class ResultsTable {
+  constructor() {
+    this.resultsTable = document.getElementById("results-table")
+    this.getTable()
+  }
+
+  async getTable() {
+
+    await axios.get(BASE_URL.concat("/results")).then((response) => {
+      this.resultsTable.innerHTML = response.data
+
+    }, (error) => {
+      console.log(error);
+    });
+  }
+
+}
+
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -252,6 +269,6 @@ document.addEventListener('DOMContentLoaded', function () {
   new LoginForm
   new SearchForm
   new LogoutForm
-
+  new ResultsTable
 
 })
