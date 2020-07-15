@@ -153,6 +153,8 @@ class SearchForm {
     this.loadingModalBtn = document.getElementById("loading-modal-btn")
     this.loadingModal = document.getElementById("loading-modal")
 
+    this.map = document.getElementById("map")
+
     this.searchBox.addEventListener("input", () => this.searchCity(this.searchBox.value))
   }
 
@@ -220,6 +222,7 @@ class SearchForm {
     this.cityCode.value = city.id;
     this.cityName.value = `${city.name} - ${city.state}`;
     this.matchList.innerHTML = "";
+    this.map.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=${city.name}`
 
     const data = {
       search: this.searchBox.value,
@@ -286,6 +289,7 @@ class FilterForm {
 
     axios.get(BASE_URL.concat("/filters")).then((response) => {
       this.filterModalBody.innerHTML = response.data
+
       this.predictBtn = document.getElementById("predict-btn")
       this.predictBtn.addEventListener("click", (e) => this.submitForm(e))
 
