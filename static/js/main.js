@@ -1,9 +1,5 @@
 const BASE_URL = "http://127.0.0.1:5000"
 
-
-
-
-
 class SignupForm {
   constructor() {
     this.navSignupBtn = document.getElementById("nav-signup")
@@ -26,7 +22,7 @@ class SignupForm {
       this.signupBtn = document.getElementById("signup-btn")
       this.signupBtn.addEventListener("click", (e) => this.submitForm(e))
     }, (error) => {
-      console.log(error);
+      console.log(error.response.data);
     });
 
 
@@ -52,7 +48,7 @@ class SignupForm {
         this.signupBtn.addEventListener("click", (e) => this.submitForm(e))
 
       }, (error) => {
-        console.log(error);
+        console.log(error.response.data);
       });
   }
 
@@ -80,7 +76,7 @@ class LoginForm {
       this.loginBtn.addEventListener("click", (e) => this.submitForm(e))
 
     }, (error) => {
-      console.log(error);
+      console.log(error.response.data);
     });
   }
   async submitForm(e) {
@@ -98,15 +94,18 @@ class LoginForm {
         }
       }).then((response) => {
         this.loginModalBody.innerHTML = response.data
-        this.loginBtn = document.getElementById("login-btn")
-        this.loginBtn.addEventListener("click", (e) => this.submitForm(e))
-        this.navLoginBtn.classList.toggle("hide")
-        this.navSignupBtn.classList.toggle("hide")
-        this.navLogoutBtn.classList.toggle("hide")
-        // this.handleResponse(response)
+
+        if (response.data.includes("Hello,")) {
+          setTimeout(() => location.reload(), 1000);
+        } else {
+          this.loginBtn = document.getElementById("login-btn")
+          this.loginBtn.addEventListener("click", (e) => this.submitForm(e))
+        }
+
+
 
       }, (error) => {
-        console.log(error);
+        console.log(error.response.data);
       });
   }
 
@@ -121,20 +120,40 @@ class LogoutForm {
     this.logoutModalBody = document.getElementById("logout-modal-body")
     this.token = document.getElementById("csrf_token").value
 
-    this.logoutBtn.addEventListener("click", () => this.submitForm())
+    this.navLogoutBtn.addEventListener("click", () => this.loadForm())
 
   }
 
-  async submitForm() {
+  async loadForm() {
 
     axios.get(BASE_URL.concat("/logout")).then((response) => {
       this.logoutModalBody.innerHTML = response.data
-      this.navLoginBtn.classList.toggle("hide")
-      this.navSignupBtn.classList.toggle("hide")
-      this.navLogoutBtn.classList.toggle("hide")
+      this.logoutBtn = document.getElementById("logout-btn")
+
+      this.logoutBtn.addEventListener("click", (e) => this.submitForm(e))
+
     }, (error) => {
-      console.log(error);
+      console.log(error.response.data);
     });
+  }
+
+  async submitForm(e) {
+    e.preventDefault();
+
+    const data = ""
+
+    axios.post(BASE_URL.concat("/logout"), data,
+      {
+        headers: {
+          'X-CSRFToken': this.token
+        }
+      }).then((response) => {
+        this.logoutModalBody.innerHTML = response.data
+        setTimeout(() => location.reload(), 1000);
+
+      }, (error) => {
+        console.log(error.response.data);
+      });
   }
 
 }
@@ -233,7 +252,6 @@ class SearchForm {
     this.searchBox.value = "";
     setTimeout(() => this.submitForm(data), 3000);
 
-
   }
 
   async submitForm(data) {
@@ -247,7 +265,7 @@ class SearchForm {
         this.loadingModalBtn.click()
         this.filterBtn.click()
       }, (error) => {
-        console.log(error);
+        console.log(error.response.data);
       });
   }
 
@@ -315,8 +333,6 @@ class FilterForm {
         }
       }).then((response) => {
         this.filterModalBody.innerHTML = response.data
-        console.log(response)
-
 
       }, (error) => {
         console.log(error);
@@ -325,15 +341,16 @@ class FilterForm {
 
 }
 
-
-
-
 document.addEventListener('DOMContentLoaded', function () {
 
-  new SignupForm
-  new LoginForm
+  const logout = document.getElementById("nav-logout")
+  if (logout) {
+    new LogoutForm
+  } else {
+    new SignupForm
+    new LoginForm
+  }
   new SearchForm
-  new LogoutForm
   new ResultsTable
   new FilterForm
 

@@ -1,10 +1,10 @@
 import os
 import requests
-from flask import Flask, render_template, request,jsonify, redirect, session, make_response, flash, url_for
+from flask import Flask, render_template, request,jsonify, redirect, session, make_response, flash, url_for, g
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_wtf.csrf import CSRFProtect
 from models import db, connect_db, User, UserQuery
-from forms import SearchForm, FilterForm, SignupForm, LoginForm
+from forms import SearchForm, FilterForm, SignupForm, LoginForm, LogoutForm
 from flask import send_from_directory
 import utils
 from sqlalchemy.exc import IntegrityError
@@ -42,7 +42,6 @@ def index():
         model =  utils.load_model(city_code)
         session["city_code"] = city_code
         session["city_name"] = city_name
-
 
         return jsonify(data="ok")
   else:
@@ -176,13 +175,28 @@ def login():
   return render_template("modal_form.html", form=form, btn=btn )
   
 
-@app.route("/logout")
+@app.route("/logout", methods=["GET","POST"])
 def logout():
   """Handle logout of user"""
-  do_logout()
-  flash("You are logged out!")
-  return render_template("message.html")
+  form = LogoutForm()
+  btn = {"id":"logout-btn","text":"Logout!"}
 
+  if form.validate_on_submit():
+    do_logout()
+    flash(f"You are logged out!")
+    return render_template("message.html")
+
+  return render_template("modal_form.html", form=form, btn=btn)
+
+
+@app.before_request
+def add_user_to_g():
+  """If user is logged in add it to flask global"""
+
+  if CURR_USER_KEY in session:
+    g.user = User.query.get(session[CURR_USER_KEY])
+  else:
+    g.user = None
 
 
 def do_login(user):

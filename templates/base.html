@@ -23,6 +23,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav ml-auto">
+        {% if not g.user %}
         <li class="nav-item"></li>
         <a id="nav-about" class="nav-link text-white">About</a>
         </li>
@@ -34,10 +35,15 @@
           <a id="nav-signup" class="nav-link text-white" data-toggle="modal" data-target="#signup-modal">
             Sign Up</a>
         </li>
+        {% else %}
+        <li class="nav-item"></li>
+        <a id="nav-about" class="nav-link text-white">About</a>
+        </li>
         <li class="nav-item">
-          <a id="nav-logout" class="nav-link hide" data-toggle="modal" data-target="#logout-modal">
+          <a id="nav-logout" class="nav-link" data-toggle="modal" data-target="#logout-modal">
             (logout)</a>
         </li>
+        {% endif %}
       </ul>
     </div>
   </div>
