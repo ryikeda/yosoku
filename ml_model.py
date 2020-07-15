@@ -55,7 +55,8 @@ class Dataset:
 
         #Create dummies
         type_dummies = pd.get_dummies(data.Type)
-        floor_plan_dummies = pd.get_dummies(data.FloorPlan)
+        floor_plan_dummies = pd.get_dummies(data.FloorPlan).drop("no_layout", axis="columns")
+        
 
         #Set type_ and floor plan properties
         self.type_ = [type_ for type_ in type_dummies.columns]
@@ -133,15 +134,19 @@ class PricePredictionModel:
         lr.fit(X_train, y_train)
         return lr
     
-    def predict_price(self,type_, area, floor_plan="no_layout"):
+    def predict_price(self,type_, area, floor_plan):
+
         area_index = np.where(self.X.columns == "Area")[0][0]
         type_index = np.where(self.X.columns == type_)[0][0]
-        floor_plan_index = np.where(self.X.columns == floor_plan)[0][0]
+        
+        if type_ == "Pre-owned condominiums, etc.":
+            floor_plan_index = np.where(self.X.columns == floor_plan)[0][0]
+            x[floor_plan_index] = 1
         
         x = np.zeros(len(self.X.columns))
         x[area_index] = area
         x[type_index] = 1
-        x[floor_plan_index] = 1
+            
         prediction = self.lr.predict([x])[0]
     
         return self.formatCurrency(prediction)

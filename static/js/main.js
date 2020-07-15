@@ -102,8 +102,6 @@ class LoginForm {
           this.loginBtn.addEventListener("click", (e) => this.submitForm(e))
         }
 
-
-
       }, (error) => {
         console.log(error.response.data);
       });
@@ -306,14 +304,30 @@ class FilterForm {
   async loadForm() {
 
     axios.get(BASE_URL.concat("/filters")).then((response) => {
+
       this.filterModalBody.innerHTML = response.data
 
       this.predictBtn = document.getElementById("predict-btn")
+      this.type_ = document.getElementById("type_")
+      this.displayFields()
       this.predictBtn.addEventListener("click", (e) => this.submitForm(e))
+      this.type_.addEventListener("click", () => this.displayFields())
 
     }, (error) => {
       console.log(error);
     });
+
+  }
+
+  displayFields() {
+    const groupFloorPlan = document.getElementById("group-floor_plan")
+
+    if (this.type_.value.includes("Residential")) {
+      groupFloorPlan.classList.add("hide")
+    } else {
+      groupFloorPlan.classList.remove("hide")
+
+    }
 
   }
 
@@ -333,6 +347,16 @@ class FilterForm {
         }
       }).then((response) => {
         this.filterModalBody.innerHTML = response.data
+        this.predictBtn = document.getElementById("predict-btn")
+        this.displayFields()
+        this.type_ = document.getElementById("type_")
+        this.type_.addEventListener("click", () => this.displayFields())
+
+
+
+        if (this.predictBtn) {
+          this.predictBtn.addEventListener("click", (e) => this.submitForm(e))
+        }
 
       }, (error) => {
         console.log(error);

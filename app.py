@@ -26,11 +26,6 @@ connect_db(app)
 
 ############################################################
 
-
-# result = UserQuery(user_id=1, location="Shizuoka", type_="Residential Land(Land Only)", area=180, layout="2LDK", price_estimate=15000000, comment="ackjac")
-# db.session.add(result)
-# db.session.commit()
-
 @app.route("/", methods=["GET","POST"])
 def index():
   
@@ -51,10 +46,6 @@ def index():
 @app.route("/filters", methods=["GET", "POST"])
 def show_filters():
 
-  # # session["city_code"] = "13102"
-  # # session["city_name"] = "Chuo Ward"
-  # session["city_code"] = ""
-  # session["city_name"] = ""
   city_code = session["city_code"]
   city_name = session["city_name"]
 
@@ -65,7 +56,7 @@ def show_filters():
     btn = {"id":"predict-btn","text":"Predict Price!"}
     form.type_.choices = [(choice,choice) for choice in model.model.type_]
     form.floor_plan.choices = [(floor_plan,floor_plan) for floor_plan in model.model.floor_plan]
-
+   
     return render_template("modal_form.html", form=form, btn=btn, city_name=city_name )
     
   else:
@@ -90,15 +81,15 @@ def filter():
   btn = {"id":"predict-btn","text":"Predict Price!"}
   form.type_.choices = [(choice,choice) for choice in model.model.type_]
   form.floor_plan.choices = [(floor_plan,floor_plan) for floor_plan in model.model.floor_plan]
-
+  form.floor_plan.choices.append(("",""))
+ 
   if form.validate_on_submit():
     type_ = form.type_.data
     area = form.area.data
     floor_plan = form.floor_plan.data
+    print(floor_plan)
 
     price_prediction = model.model.predict_price(type_=type_,area=area,floor_plan=floor_plan)
-    
-
 
     
     flash(f"The price estimate is {price_prediction}")

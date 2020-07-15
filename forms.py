@@ -13,7 +13,7 @@ class FilterForm(FlaskForm):
 
   type_ = SelectField("type", validators=[InputRequired()])
   area = FloatField("area", validators=[InputRequired()])
-  floor_plan = SelectField("floor_plan", validators=[InputRequired()])
+  floor_plan = SelectField("floor_plan")
 
 class SignupForm(FlaskForm):
   """Form for adding users."""
