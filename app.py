@@ -85,7 +85,10 @@ def filter():
   form = FilterForm()
 
   city_code = session["city_code"]
+  city_name = session["city_name"]
+
   model = utils.load_model(city_code)
+  btn = {"id":"predict-btn","text":"Predict Price!"}
   form.type_.choices = [(choice,choice) for choice in model.model.type_]
   form.floor_plan.choices = [(floor_plan,floor_plan) for floor_plan in model.model.floor_plan]
 
@@ -93,15 +96,19 @@ def filter():
     type_ = form.type_.data
     area = form.area.data
     floor_plan = form.floor_plan.data
-    print("Form is validated ************************")
-    print(type_)
-    print(area)
-    print(floor_plan)
-    return "ok"
+
+    price_prediction = model.model.predict_price(type_=type_,area=area,floor_plan=floor_plan)
+    
+
+
+    
+    flash(f"The price estimate is {price_prediction}")
+
+    return render_template("message.html")
 
   else:
       print("Form not being validated -----------------")
-      return render_template("predict.html",form=form )
+      return render_template("modal_form.html",form=form, city_name=city_name, btn=btn)
 
 
 

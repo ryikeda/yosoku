@@ -142,12 +142,16 @@ class PricePredictionModel:
         x[area_index] = area
         x[type_index] = 1
         x[floor_plan_index] = 1
+        prediction = self.lr.predict([x])[0]
     
-        return self.lr.predict([x])[0]
+        return self.formatCurrency(prediction)
     
     def cross_validation_score(self):
         cv = ShuffleSplit(n_splits=5, test_size=0.2, random_state=0)
         return cross_val_score(LinearRegression(), self.X, self.y, cv=cv)
+
+    def formatCurrency(self,num):
+        return  "¥ {:,.0f}".format(num)
 
     
     

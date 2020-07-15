@@ -147,7 +147,7 @@ class SearchForm {
     this.cityCode = document.getElementById("city_code")
     this.cityName = document.getElementById("city_name")
     this.matchList = document.getElementById("match-list")
-    this.token = document.getElementById("csrf_token")
+    this.token = document.getElementById("csrf_token").value
 
     this.filterBtn = document.getElementById("filter-btn")
     this.loadingModalBtn = document.getElementById("loading-modal-btn")
@@ -238,7 +238,7 @@ class SearchForm {
     axios.post(BASE_URL, data,
       {
         headers: {
-          'X-CSRFToken': this.token.value
+          'X-CSRFToken': this.token
         }
       }).then((response) => {
         this.loadingModalBtn.click()
@@ -273,23 +273,55 @@ class FilterForm {
     this.filterBtn = document.getElementById("filter-btn")
     this.filterModalBody = document.getElementById("filter-modal-body")
 
+    this.type_ = document.getElementById("type_")
+    this.area = document.getElementById("area")
+    this.floor_plan = document.getElementById("floor_plan")
+    this.token = document.getElementById("csrf_token").value
 
     this.filterBtn.addEventListener("click", () => this.loadForm())
+
   }
 
   async loadForm() {
 
     axios.get(BASE_URL.concat("/filters")).then((response) => {
       this.filterModalBody.innerHTML = response.data
+      this.predictBtn = document.getElementById("predict-btn")
+      this.predictBtn.addEventListener("click", (e) => this.submitForm(e))
 
     }, (error) => {
       console.log(error);
     });
 
+  }
 
+  async submitForm(e) {
+    e.preventDefault();
+
+    const data = {
+      type_: type_.value,
+      area: area.value,
+      floor_plan: floor_plan.value,
+    }
+
+    axios.post(BASE_URL.concat("/predict"), data,
+      {
+        headers: {
+          'X-CSRFToken': this.token
+        }
+      }).then((response) => {
+        this.filterModalBody.innerHTML = response.data
+        console.log(response)
+
+
+      }, (error) => {
+        console.log(error);
+      });
   }
 
 }
+
+
 
 
 document.addEventListener('DOMContentLoaded', function () {
