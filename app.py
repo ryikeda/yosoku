@@ -150,21 +150,6 @@ def edit_query():
     return render_template("modal_form.html", form=form, btn=btn)
 
 
-@app.route("/api/predict_price", methods=["GET", "POST"])
-def predict_price_api():
-
-    # city_code = request.get_json()["city_code"]
-    city_code = session["city_code"]
-    type_ = request.get_json()["type"]
-    area = request.get_json()["area"]
-    floor_plan = request.get_json()["floorPlan"]
-
-    model = utils.load_model(city_code)
-    prediction = model.model.predict_price(type_, area, floor_plan)
-
-    return jsonify(data=prediction)
-
-
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
