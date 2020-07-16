@@ -29,8 +29,8 @@ class SignupForm(FlaskForm):
 class LoginForm(FlaskForm):
     """Login form"""
 
-    login_username = StringField('Username', validators=[InputRequired()])
-    login_password = PasswordField('Password', validators=[Length(min=6)])
+    username = StringField('Username', validators=[InputRequired()])
+    password = PasswordField('Password', validators=[Length(min=6)])
 
 
 class LogoutForm(FlaskForm):

@@ -203,7 +203,7 @@ def login():
 
     if form.validate_on_submit():
         user = User.authenticate(
-            form.login_username.data, form.login_password.data)
+            form.username.data, form.password.data)
 
         if user:
             do_login(user)
@@ -211,8 +211,8 @@ def login():
             return render_template("message.html")
 
         # Clear form before resending
-        form.login_username.data = ""
-        form.login_password.data = ""
+        form.username.data = ""
+        form.password.data = ""
         flash("Invalid credentials")
 
     return render_template("modal_form.html", form=form, btn=btn)

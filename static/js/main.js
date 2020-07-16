@@ -62,54 +62,119 @@ class SignupForm {
 class LoginForm {
   constructor() {
 
-    this.navLoginBtn = document.getElementById("nav-login")
-    this.navSignupBtn = document.getElementById("nav-signup")
-    this.navLogoutBtn = document.getElementById("nav-logout")
+    this.navbar = document.getElementById("navbar")
 
-    this.loginModalBody = document.getElementById("login-modal-body")
+    this.modal = document.getElementById("modal")
+    this.modalTitle = document.getElementById("modal-title")
+    this.modalBody = document.getElementById("modal-body")
+    this.modalBtn = document.getElementById("modal-btn")
+
+    this.loginEndpoint = "/login"
+
     this.token = document.getElementById("csrf_token").value
 
-    this.navLoginBtn.addEventListener("click", () => this.loadForm())
+    this.navbar.addEventListener("click", (e) => this.handleClick(e))
+    this.modal.addEventListener("click", (e) => this.handleClick(e))
+
+    //////////////////////////////
+
+    // this.navLoginBtn = document.getElementById("nav-login")
+    // this.navSignupBtn = document.getElementById("nav-signup")
+    // this.navLogoutBtn = document.getElementById("nav-logout")
+
+    // this.loginModalBody = document.getElementById("login-modal-body")
+    // this.token = document.getElementById("csrf_token").value
+
+    // this.navLoginBtn.addEventListener("click", () => this.loadForm())
   }
 
-  async loadForm() {
+  handleClick(e) {
+    e.preventDefault()
 
-    axios.get(BASE_URL.concat("/login")).then((response) => {
-      this.loginModalBody.innerHTML = response.data
-      this.loginBtn = document.getElementById("login-btn")
-      this.loginBtn.addEventListener("click", (e) => this.submitForm(e))
-
-    }, (error) => {
-      console.log(error.response.data);
-    });
-  }
-  async submitForm(e) {
-    e.preventDefault();
-
-    const data = {
-      login_username: login_username.value,
-      login_password: login_password.value
+    if (e.target.id === "nav-login") {
+      this.modalBtn.click()
+      this.modalTitle.innerText = "Login"
+      this.submitForm("get", this.loginEndpoint)
     }
 
-    axios.post(BASE_URL.concat("/login"), data,
-      {
-        headers: {
-          'X-CSRFToken': this.token
-        }
-      }).then((response) => {
-        this.loginModalBody.innerHTML = response.data
+    if (e.target.id === "login-btn") {
+      const username = document.getElementById("username")
+      const password = document.getElementById("password")
 
-        if (response.data.includes("Hello,")) {
-          setTimeout(() => location.reload(), 1000);
-        } else {
-          this.loginBtn = document.getElementById("login-btn")
-          this.loginBtn.addEventListener("click", (e) => this.submitForm(e))
-        }
+      const data = {
+        username: username.value,
+        password: password.value
+      }
 
-      }, (error) => {
-        console.log(error.response.data);
-      });
+      this.submitForm("post", this.loginEndpoint, data)
+
+    }
+
   }
+
+  async submitForm(method, endpoint, data) {
+
+    axios({
+      method: method,
+      url: BASE_URL.concat(endpoint),
+      data: data,
+      headers: {
+        'X-CSRFToken': this.token
+      }
+    }).then((response) => {
+      this.modalBody.innerHTML = response.data
+      if (response.data.includes("Hello,")) {
+        setTimeout(() => location.reload(), 1000);
+      }
+    }, (error) => {
+      console.log(error.response.data);
+    })
+  }
+
+
+
+
+
+  ///////////////////////////////////
+
+  // async loadForm() {
+
+  //   axios.get(BASE_URL.concat("/login")).then((response) => {
+  //     this.loginModalBody.innerHTML = response.data
+  //     this.loginBtn = document.getElementById("login-btn")
+  //     this.loginBtn.addEventListener("click", (e) => this.submitForm(e))
+
+  //   }, (error) => {
+  //     console.log(error.response.data);
+  //   });
+  // }
+  // async submitForm(e) {
+  //   e.preventDefault();
+
+  //   const data = {
+  //     login_username: login_username.value,
+  //     login_password: login_password.value
+  //   }
+
+  //   axios.post(BASE_URL.concat("/login"), data,
+  //     {
+  //       headers: {
+  //         'X-CSRFToken': this.token
+  //       }
+  //     }).then((response) => {
+  //       this.loginModalBody.innerHTML = response.data
+
+  //       if (response.data.includes("Hello,")) {
+  //         setTimeout(() => location.reload(), 1000);
+  //       } else {
+  //         this.loginBtn = document.getElementById("login-btn")
+  //         this.loginBtn.addEventListener("click", (e) => this.submitForm(e))
+  //       }
+
+  //     }, (error) => {
+  //       console.log(error.response.data);
+  //     });
+  // }
 
 }
 
