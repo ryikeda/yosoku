@@ -61,7 +61,6 @@ class SignupForm {
 
 class LoginForm {
   constructor() {
-
     this.navbar = document.getElementById("navbar")
 
     this.modal = document.getElementById("modal")
@@ -124,49 +123,54 @@ class LoginForm {
 
 class LogoutForm {
   constructor() {
-    this.logoutBtn = document.getElementById("logout-btn")
-    this.navLoginBtn = document.getElementById("nav-login")
-    this.navSignupBtn = document.getElementById("nav-signup")
-    this.navLogoutBtn = document.getElementById("nav-logout")
-    this.logoutModalBody = document.getElementById("logout-modal-body")
+    this.navbar = document.getElementById("navbar")
+
+    this.modal = document.getElementById("modal")
+    this.modalTitle = document.getElementById("modal-title")
+    this.modalBody = document.getElementById("modal-body")
+    this.modalBtn = document.getElementById("modal-btn")
+
+    this.logoutEndpoint = "/logout"
+
     this.token = document.getElementById("csrf_token").value
 
-    this.navLogoutBtn.addEventListener("click", () => this.loadForm())
+    this.navbar.addEventListener("click", (e) => this.handleClick(e))
+    this.modal.addEventListener("click", (e) => this.handleClick(e))
 
   }
 
-  async loadForm() {
+  handleClick(e) {
+    e.preventDefault()
 
-    axios.get(BASE_URL.concat("/logout")).then((response) => {
-      this.logoutModalBody.innerHTML = response.data
-      this.logoutBtn = document.getElementById("logout-btn")
+    if (e.target.id === "nav-logout") {
+      this.modalBtn.click()
+      this.modalTitle.innerText = "Logout"
+      this.submitForm("get", this.logoutEndpoint)
+    }
 
-      this.logoutBtn.addEventListener("click", (e) => this.submitForm(e))
+    if (e.target.id === "logout-btn") {
+      this.submitForm("post", this.logoutEndpoint)
+    }
+  }
 
+  async submitForm(method, endpoint, data) {
+
+    axios({
+      method: method,
+      url: BASE_URL.concat(endpoint),
+      data: data,
+      headers: {
+        'X-CSRFToken': this.token
+      }
+    }).then((response) => {
+      this.modalBody.innerHTML = response.data
+      if (response.data.includes("You are logged out!")) {
+        setTimeout(() => location.reload(), 1000);
+      }
     }, (error) => {
       console.log(error.response.data);
-    });
+    })
   }
-
-  async submitForm(e) {
-    e.preventDefault();
-
-    const data = ""
-
-    axios.post(BASE_URL.concat("/logout"), data,
-      {
-        headers: {
-          'X-CSRFToken': this.token
-        }
-      }).then((response) => {
-        this.logoutModalBody.innerHTML = response.data
-        setTimeout(() => location.reload(), 1000);
-
-      }, (error) => {
-        console.log(error.response.data);
-      });
-  }
-
 }
 
 
