@@ -369,13 +369,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const logout = document.getElementById("nav-logout")
   if (logout) {
-    new LogoutForm
+    new LogoutForm()
   } else {
-    new SignupForm
-    new LoginForm
+    new SignupForm()
+    new LoginForm()
   }
-  new SearchForm
-  new ResultsTable
-  new FilterForm
+
+  new SearchForm()
+  new ResultsTable()
+  new FilterForm()
 
 })
