@@ -21,9 +21,9 @@ class FilterForm(FlaskForm):
 class SignupForm(FlaskForm):
     """Form for adding users."""
 
-    signup_username = StringField('Username', validators=[InputRequired()])
-    signup_email = StringField('E-mail', validators=[InputRequired(), Email()])
-    signup_password = PasswordField('Password', validators=[Length(min=6)])
+    username = StringField('Username', validators=[InputRequired()])
+    email = StringField('E-mail', validators=[InputRequired(), Email()])
+    password = PasswordField('Password', validators=[Length(min=6)])
 
 
 class LoginForm(FlaskForm):

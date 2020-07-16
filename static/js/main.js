@@ -2,58 +2,62 @@ const BASE_URL = "http://127.0.0.1:5000"
 
 class SignupForm {
   constructor() {
-    this.navSignupBtn = document.getElementById("nav-signup")
+    this.navbar = document.getElementById("navbar")
+
+    this.modal = document.getElementById("modal")
+    this.modalTitle = document.getElementById("modal-title")
+    this.modalBody = document.getElementById("modal-body")
+    this.modalBtn = document.getElementById("modal-btn")
+
+    this.signupEndpoint = "/signup"
 
     this.token = document.getElementById("csrf_token").value
-    this.singupModal = document.getElementById("signup-modal")
-    this.signupModalBody = document.getElementById("signup-modal-body")
-    this.signupUsername = document.getElementById("signup_username")
-    this.signupEmail = document.getElementById("signup_email")
-    this.signupPassword = document.getElementById("signup_password")
 
+    this.navbar.addEventListener("click", (e) => this.handleClick(e))
+    this.modal.addEventListener("click", (e) => this.handleClick(e))
 
-    this.navSignupBtn.addEventListener("click", () => this.loadForm())
   };
 
-  async loadForm() {
+  handleClick(e) {
+    e.preventDefault()
 
-    axios.get(BASE_URL.concat("/signup")).then((response) => {
-      this.signupModalBody.innerHTML = response.data
-      this.signupBtn = document.getElementById("signup-btn")
-      this.signupBtn.addEventListener("click", (e) => this.submitForm(e))
-    }, (error) => {
-      console.log(error.response.data);
-    });
-
-
-  }
-
-  async submitForm(e) {
-    e.preventDefault();
-
-    const data = {
-      signup_username: signup_username.value,
-      signup_email: signup_email.value,
-      signup_password: signup_password.value
+    if (e.target.id === "nav-signup") {
+      this.modalBtn.click()
+      this.modalTitle.innerText = "Sign Up"
+      this.submitForm("get", this.signupEndpoint)
     }
 
-    axios.post(BASE_URL.concat("/signup"), data,
-      {
-        headers: {
-          'X-CSRFToken': this.token
-        }
-      }).then((response) => {
-        this.signupModalBody.innerHTML = response.data
-        this.signupBtn = document.getElementById("signup-btn")
-        this.signupBtn.addEventListener("click", (e) => this.submitForm(e))
+    if (e.target.id === "signup-btn") {
+      const username = document.getElementById("username")
+      const email = document.getElementById("email")
+      const password = document.getElementById("password")
 
-      }, (error) => {
-        console.log(error.response.data);
-      });
+      const data = {
+        username: username.value,
+        email: email.value,
+        password: password.value
+      }
+      this.submitForm("post", this.signupEndpoint, data)
+    }
   }
 
+  async submitForm(method, endpoint, data) {
 
+    axios({
+      method: method,
+      url: BASE_URL.concat(endpoint),
+      data: data,
+      headers: {
+        'X-CSRFToken': this.token
+      }
+    }).then((response) => {
+      this.modalBody.innerHTML = response.data
+    }, (error) => {
+      console.log(error.response.data);
+    })
+  }
 }
+
 
 class LoginForm {
   constructor() {
@@ -278,12 +282,11 @@ class ResultsTable {
     this.modalBody = document.getElementById("modal-body")
     this.modalBtn = document.getElementById("modal-btn")
 
-    this.deleteEndPoint = "/delete/query"
-    this.editEndPoint = "/edit/query"
+    this.deleteEndpoint = "/delete/query"
+    this.editEndpoint = "/edit/query"
 
     this.token = document.getElementById("csrf_token").value
     this.getTable()
-
 
     this.resultsTable.addEventListener("click", (e) => this.handleClick(e))
     this.modal.addEventListener("click", (e) => this.handleClick(e))
@@ -304,22 +307,21 @@ class ResultsTable {
     })
   }
 
-  async handleClick(e) {
+  handleClick(e) {
     e.preventDefault()
 
     // Delete query
     if (e.target.className === "fas fa-trash-alt") {
       this.tr = e.target.parentElement.parentElement
-      console.dir(this.modal)
       this.modalTitle.innerText = "Delete Query"
       this.modalBtn.click()
 
-      this.submitForm("get", this.deleteEndPoint)
+      this.submitForm("get", this.deleteEndpoint)
     }
 
     if (e.target.id === "delete-query-btn") {
       const data = { queryId: this.tr.dataset.queryId }
-      this.submitForm("post", this.deleteEndPoint, data)
+      this.submitForm("post", this.deleteEndpoint, data)
     }
 
     // Edit comment
@@ -327,13 +329,13 @@ class ResultsTable {
       this.tr = e.target.parentElement.parentElement
       this.modalTitle.innerText = "Edit Comment"
       this.modalBtn.click()
-      this.submitForm("get", this.editEndPoint)
+      this.submitForm("get", this.editEndpoint)
     }
 
     if (e.target.id === "edit-query-btn") {
       const commentBox = document.getElementById("comment")
       const data = { queryId: this.tr.dataset.queryId, comment: commentBox.value }
-      this.submitForm("post", this.editEndPoint, data)
+      this.submitForm("post", this.editEndpoint, data)
     }
 
   }

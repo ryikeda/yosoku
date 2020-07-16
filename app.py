@@ -180,11 +180,12 @@ def signup():
 
     if form.validate_on_submit():
         try:
-            user = User.signup(username=form.signup_username.data,
-                               password=form.signup_password.data, email=form.signup_email.data)
+            user = User.signup(username=form.username.data,
+                               password=form.password.data, email=form.email.data)
             db.session.commit()
 
         except IntegrityError:
+            # Handle if username aready taken
             return render_template("/forms/signup_form.html")
 
         flash("User Created! Please login.")
