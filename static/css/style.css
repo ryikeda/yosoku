@@ -31,7 +31,7 @@
   z-index: 11;
 }
 
-.nav-link{
+.nav-link, .fas{
   cursor: pointer;
 }
 
@@ -61,3 +61,8 @@
   border: white;
   z-index: 10;
 }
+
+.fa-trash-alt{
+  color: rgb(168, 65, 65);
+}
+

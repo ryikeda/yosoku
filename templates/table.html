@@ -23,8 +23,8 @@
       <td>{{result.layout}}</td>
       <td>{{result.price_estimate}}</td>
       {% if g.user %}
-      <td>{{result.comment}} <i class="fas fa-edit"></i></td>
-      <td class="text-center"><i class="fas fa-trash-alt"></i></td>
+      <td>{{result.comment}} </td>
+      <td class="text-center"><i class="fas fa-edit"></i> &nbsp; <i class="fas fa-trash-alt"></i></td>
       {% endif %}
       {% endfor %}
       {% else %}

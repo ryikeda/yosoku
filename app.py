@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, jsonify, redirect, session, m
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_wtf.csrf import CSRFProtect
 from models import db, connect_db, User, UserQuery
-from forms import SearchForm, FilterForm, SignupForm, LoginForm, LogoutForm, DeleteForm
+from forms import SearchForm, FilterForm, SignupForm, LoginForm, LogoutForm, DeleteForm, EditQueryForm
 from flask import send_from_directory
 import utils
 from sqlalchemy.exc import IntegrityError
@@ -125,6 +125,26 @@ def delete_query():
         db.session.delete(query)
         db.session.commit()
         flash("Query deleted!")
+        return render_template("message.html")
+
+    return render_template("modal_form.html", form=form, btn=btn)
+
+
+@app.route("/edit/query", methods=["GET", "POST"])
+def edit_query():
+
+    form = EditQueryForm()
+    btn = {"id": "edit-query-btn", "text": "Edit!"}
+    if form.validate_on_submit():
+        comment = form.comment.data
+        query_id = int(request.get_json()["queryId"])
+
+        query = UserQuery.query.filter_by(id=query_id).first()
+        query.comment = comment
+        db.session.add(query)
+        db.session.commit()
+
+        flash("Comment added!")
         return render_template("message.html")
 
     return render_template("modal_form.html", form=form, btn=btn)

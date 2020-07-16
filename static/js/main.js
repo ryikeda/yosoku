@@ -276,9 +276,12 @@ class ResultsTable {
 
     this.deleteQueryModalBtn = document.getElementById("delete-query-modal-btn")
     this.deleteQueryBody = document.getElementById("delete-query-body")
+    this.deleteEndPoint = "/delete/query"
     this.token = document.getElementById("csrf_token").value
     this.getTable()
 
+    this.editModalBtn = document.getElementById("edit-query-modal-btn")
+    this.editEndPoint = "/edit/query"
 
     this.resultsTable.addEventListener("click", (e) => this.handleClick(e))
     this.deleteQueryModal.addEventListener("click", (e) => this.handleClick(e))
@@ -301,23 +304,37 @@ class ResultsTable {
 
   async handleClick(e) {
     e.preventDefault()
+
     if (e.target.className === "fas fa-trash-alt") {
       this.tr = e.target.parentElement.parentElement
       this.deleteQueryModalBtn.click()
-      this.submitForm("get")
+
+      this.submitForm("get", this.deleteEndPoint)
     }
 
     if (e.target.id === "delete-query-btn") {
       const data = { queryId: this.tr.dataset.queryId }
-      this.submitForm("post", data)
+      this.submitForm("post", this.deleteEndPoint, data)
+    }
+
+    if (e.target.className === "fas fa-edit") {
+      this.tr = e.target.parentElement.parentElement
+      this.editModalBtn.click()
+      this.submitForm("get", this.editEndPoint)
+    }
+
+    if (e.target.id === "edit-query-btn") {
+      const commentBox = document.getElementById("comment")
+      const data = { queryId: this.tr.dataset.queryId, comment: commentBox.value }
+      this.submitForm("post", this.editEndPoint, data)
     }
   }
 
-  async submitForm(method, data) {
+  async submitForm(method, endpoint, data) {
 
     axios({
       method: method,
-      url: BASE_URL.concat("/delete/query"),
+      url: BASE_URL.concat(endpoint),
       data: data,
       headers: {
         'X-CSRFToken': this.token

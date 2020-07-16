@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, FloatField, BooleanField, SelectField, HiddenField, PasswordField
+from wtforms import StringField, FloatField, BooleanField, SelectField, HiddenField, PasswordField, TextAreaField
 from wtforms.validators import InputRequired, Email, Length
 
 
@@ -39,3 +39,9 @@ class LogoutForm(FlaskForm):
 
 class DeleteForm(FlaskForm):
     """Delete form"""
+
+
+class EditQueryForm(FlaskForm):
+    """Delete form"""
+    comment = TextAreaField("Comment", validators=[
+        InputRequired(), Length(max=40)])
