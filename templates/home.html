@@ -128,42 +128,23 @@
 </div>
 <!-- Loading Modal -->
 
-<!-- Delete Query Modal -->
-<button id="delete-query-modal-btn" type="button" class="btn btn-primary hide" data-toggle="modal"
-  data-target="#delete-query-modal">
+<!--Modal -->
+<button id="modal-btn" type="button" class="btn btn-primary hide" data-toggle="modal" data-target="#modal">
 </button>
-<div class="modal fade" id="delete-query-modal" tabindex="-1" role="dialog">
+<div class="modal fade" id="modal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">x
-        </button>
-      </div>
-      <div id="delete-query-body" class="modal-body">
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Delete Query Modal -->
-
-<!-- Edit Query Modal -->
-<button id="edit-query-modal-btn" type="button" class="btn btn-primary hide" data-toggle="modal"
-  data-target="#delete-query-modal">
-</button>
-<div class="modal fade" id="edit-query-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editModalLabel">Edit Comment</h5>
+        <h5 id="modal-title" class="modal-title"></h5>
         <button type="button" class="close" data-dismiss="modal">
           x</button>
       </div>
-      <div id="edit-query-body" class="modal-body">
+      <div id="modal-body" class="modal-body">
       </div>
     </div>
   </div>
 </div>
-<!-- Edit Query Modal -->
+<!--Modal -->
 
 {% endblock %}
 {% block scripts %}

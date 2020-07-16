@@ -272,19 +272,21 @@ class SearchForm {
 class ResultsTable {
   constructor() {
     this.resultsTable = document.getElementById("results-table")
-    this.deleteQueryModal = document.getElementById("delete-query-modal")
 
-    this.deleteQueryModalBtn = document.getElementById("delete-query-modal-btn")
-    this.deleteQueryBody = document.getElementById("delete-query-body")
+    this.modal = document.getElementById("modal")
+    this.modalTitle = document.getElementById("modal-title")
+    this.modalBody = document.getElementById("modal-body")
+    this.modalBtn = document.getElementById("modal-btn")
+
     this.deleteEndPoint = "/delete/query"
+    this.editEndPoint = "/edit/query"
+
     this.token = document.getElementById("csrf_token").value
     this.getTable()
 
-    this.editModalBtn = document.getElementById("edit-query-modal-btn")
-    this.editEndPoint = "/edit/query"
 
     this.resultsTable.addEventListener("click", (e) => this.handleClick(e))
-    this.deleteQueryModal.addEventListener("click", (e) => this.handleClick(e))
+    this.modal.addEventListener("click", (e) => this.handleClick(e))
   }
 
   async getTable() {
@@ -305,9 +307,12 @@ class ResultsTable {
   async handleClick(e) {
     e.preventDefault()
 
+    // Delete query
     if (e.target.className === "fas fa-trash-alt") {
       this.tr = e.target.parentElement.parentElement
-      this.deleteQueryModalBtn.click()
+      console.dir(this.modal)
+      this.modalTitle.innerText = "Delete Query"
+      this.modalBtn.click()
 
       this.submitForm("get", this.deleteEndPoint)
     }
@@ -317,9 +322,11 @@ class ResultsTable {
       this.submitForm("post", this.deleteEndPoint, data)
     }
 
+    // Edit comment
     if (e.target.className === "fas fa-edit") {
       this.tr = e.target.parentElement.parentElement
-      this.editModalBtn.click()
+      this.modalTitle.innerText = "Edit Comment"
+      this.modalBtn.click()
       this.submitForm("get", this.editEndPoint)
     }
 
@@ -328,7 +335,9 @@ class ResultsTable {
       const data = { queryId: this.tr.dataset.queryId, comment: commentBox.value }
       this.submitForm("post", this.editEndPoint, data)
     }
+
   }
+
 
   async submitForm(method, endpoint, data) {
 
@@ -340,7 +349,7 @@ class ResultsTable {
         'X-CSRFToken': this.token
       }
     }).then((response) => {
-      this.deleteQueryBody.innerHTML = response.data
+      this.modalBody.innerHTML = response.data
       if (method === "post") {
         this.getTable()
       }
