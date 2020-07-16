@@ -272,19 +272,65 @@ class SearchForm {
 class ResultsTable {
   constructor() {
     this.resultsTable = document.getElementById("results-table")
+    this.deleteQueryModal = document.getElementById("delete-query-modal")
+
+    this.deleteQueryModalBtn = document.getElementById("delete-query-modal-btn")
+    this.deleteQueryBody = document.getElementById("delete-query-body")
+    this.token = document.getElementById("csrf_token").value
     this.getTable()
+
+
+    this.resultsTable.addEventListener("click", (e) => this.handleClick(e))
+    this.deleteQueryModal.addEventListener("click", (e) => this.handleClick(e))
   }
 
   async getTable() {
 
-    await axios.get(BASE_URL.concat("/results")).then((response) => {
+    axios({
+      method: "get",
+      url: BASE_URL.concat("/results"),
+      headers: {
+        'X-CSRFToken': this.token
+      }
+    }).then((response) => {
       this.resultsTable.innerHTML = response.data
-
     }, (error) => {
-      console.log(error);
-    });
+      console.log(error.response.data);
+    })
   }
 
+  async handleClick(e) {
+    e.preventDefault()
+    if (e.target.className === "fas fa-trash-alt") {
+      this.tr = e.target.parentElement.parentElement
+      this.deleteQueryModalBtn.click()
+      this.submitForm("get")
+    }
+
+    if (e.target.id === "delete-query-btn") {
+      const data = { queryId: this.tr.dataset.queryId }
+      this.submitForm("post", data)
+    }
+  }
+
+  async submitForm(method, data) {
+
+    axios({
+      method: method,
+      url: BASE_URL.concat("/delete/query"),
+      data: data,
+      headers: {
+        'X-CSRFToken': this.token
+      }
+    }).then((response) => {
+      this.deleteQueryBody.innerHTML = response.data
+      if (method === "post") {
+        this.getTable()
+      }
+    }, (error) => {
+      console.log(error.response.data);
+    })
+  }
 }
 
 class FilterForm {
@@ -326,7 +372,6 @@ class FilterForm {
       groupFloorPlan.classList.add("hide")
     } else {
       groupFloorPlan.classList.remove("hide")
-
     }
 
   }
@@ -380,3 +425,4 @@ document.addEventListener('DOMContentLoaded', function () {
   new FilterForm()
 
 })
+

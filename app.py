@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, jsonify, redirect, session, m
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_wtf.csrf import CSRFProtect
 from models import db, connect_db, User, UserQuery
-from forms import SearchForm, FilterForm, SignupForm, LoginForm, LogoutForm
+from forms import SearchForm, FilterForm, SignupForm, LoginForm, LogoutForm, DeleteForm
 from flask import send_from_directory
 import utils
 from sqlalchemy.exc import IntegrityError
@@ -94,18 +94,40 @@ def filter():
         type_ = form.type_.data
         area = form.area.data
         floor_plan = form.floor_plan.data
-        print(floor_plan)
 
         price_prediction = model.model.predict_price(
             type_=type_, area=area, floor_plan=floor_plan)
 
         flash(f"The price estimate is {price_prediction}")
 
+        if g.user:
+            # add results to user database
+            query = UserQuery(user_id=g.user.id, location=city_name, type_=type_,
+                              area=area, layout=floor_plan, price_estimate=price_prediction, comment="")
+            db.session.add(query)
+            db.session.commit()
+
         return render_template("message.html")
 
     else:
         print("Form not being validated -----------------")
         return render_template("modal_form.html", form=form, city_name=city_name, btn=btn)
+
+
+@app.route("/delete/query", methods=["GET", "POST"])
+def delete_query():
+
+    form = DeleteForm()
+    btn = {"id": "delete-query-btn", "text": "Delete!"}
+    if form.validate_on_submit():
+        query_id = int(request.get_json()["queryId"])
+        query = UserQuery.query.filter_by(id=query_id).first()
+        db.session.delete(query)
+        db.session.commit()
+        flash("Query deleted!")
+        return render_template("message.html")
+
+    return render_template("modal_form.html", form=form, btn=btn)
 
 
 @app.route("/api/predict_price", methods=["GET", "POST"])

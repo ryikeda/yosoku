@@ -8,24 +8,28 @@
       <th scope="col">Price Estimate</th>
       {% if g.user %}
       <th scope="col">Comment</th>
-      <th scope="col">Actions</th>
+      <th scope="col"></th>
       {% endif %}
     </tr>
   </thead>
 
   <tbody>
+    {% if results %}
     {% for result in results %}
-    <tr>
+    <tr data-query-id="{{result.id}}">
       <td>{{result.location}}</td>
       <td>{{result.type_}}</td>
       <td>{{result.area}}</td>
       <td>{{result.layout}}</td>
       <td>{{result.price_estimate}}</td>
       {% if g.user %}
-      <td>{{result.comment}}</td>
-      <td><a href="#"><i class="fas fa-edit"></i></a> <a href="#"><i class="fas fa-trash-alt"></i></a> </td>
+      <td>{{result.comment}} <i class="fas fa-edit"></i></td>
+      <td class="text-center"><i class="fas fa-trash-alt"></i></td>
       {% endif %}
       {% endfor %}
+      {% else %}
+      <td colspan="7">No results to display.</td>
+      {% endif %}
     </tr>
   </tbody>
 </table>
