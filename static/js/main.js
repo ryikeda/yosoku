@@ -76,16 +76,6 @@ class LoginForm {
     this.navbar.addEventListener("click", (e) => this.handleClick(e))
     this.modal.addEventListener("click", (e) => this.handleClick(e))
 
-    //////////////////////////////
-
-    // this.navLoginBtn = document.getElementById("nav-login")
-    // this.navSignupBtn = document.getElementById("nav-signup")
-    // this.navLogoutBtn = document.getElementById("nav-logout")
-
-    // this.loginModalBody = document.getElementById("login-modal-body")
-    // this.token = document.getElementById("csrf_token").value
-
-    // this.navLoginBtn.addEventListener("click", () => this.loadForm())
   }
 
   handleClick(e) {
@@ -130,52 +120,6 @@ class LoginForm {
       console.log(error.response.data);
     })
   }
-
-
-
-
-
-  ///////////////////////////////////
-
-  // async loadForm() {
-
-  //   axios.get(BASE_URL.concat("/login")).then((response) => {
-  //     this.loginModalBody.innerHTML = response.data
-  //     this.loginBtn = document.getElementById("login-btn")
-  //     this.loginBtn.addEventListener("click", (e) => this.submitForm(e))
-
-  //   }, (error) => {
-  //     console.log(error.response.data);
-  //   });
-  // }
-  // async submitForm(e) {
-  //   e.preventDefault();
-
-  //   const data = {
-  //     login_username: login_username.value,
-  //     login_password: login_password.value
-  //   }
-
-  //   axios.post(BASE_URL.concat("/login"), data,
-  //     {
-  //       headers: {
-  //         'X-CSRFToken': this.token
-  //       }
-  //     }).then((response) => {
-  //       this.loginModalBody.innerHTML = response.data
-
-  //       if (response.data.includes("Hello,")) {
-  //         setTimeout(() => location.reload(), 1000);
-  //       } else {
-  //         this.loginBtn = document.getElementById("login-btn")
-  //         this.loginBtn.addEventListener("click", (e) => this.submitForm(e))
-  //       }
-
-  //     }, (error) => {
-  //       console.log(error.response.data);
-  //     });
-  // }
-
 }
 
 class LogoutForm {
