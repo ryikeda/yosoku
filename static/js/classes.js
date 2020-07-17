@@ -184,8 +184,6 @@ class UserForm {
     this.modalBody = document.getElementById("modal-body")
     this.modalBtn = document.getElementById("modal-btn")
 
-    this.userEndpoint = "/user"
-
     this.token = document.getElementById("csrf_token").value
 
     this.navbar.addEventListener("click", (e) => this.handleClick(e))
@@ -230,29 +228,24 @@ class UserForm {
 
 class SearchForm {
   constructor() {
-    this.searchForm = document.getElementById("search-form")
     this.searchBox = document.getElementById("search")
-    this.cityCode = document.getElementById("city_code")
-    this.cityName = document.getElementById("city_name")
     this.matchList = document.getElementById("match-list")
     this.token = document.getElementById("csrf_token").value
 
     this.filterBtn = document.getElementById("filter-btn")
     this.loadingModalBtn = document.getElementById("loading-modal-btn")
-    this.loadingModal = document.getElementById("loading-modal")
 
     this.map = document.getElementById("map")
 
     this.searchBox.addEventListener("input", () => this.searchCity(this.searchBox.value))
+    this.matchList.addEventListener("click", (e) => this.handleClick(e))
   }
-
 
   async searchCity(cityName) {
     const res = await fetch("/static/resources/all_cities.json")
     const cities = await res.json()
 
     // get matches
-
     let matches = cities.filter(city => {
 
       const regex = new RegExp(`^${cityName}`, "gi")
@@ -265,79 +258,68 @@ class SearchForm {
     }
 
     this.outputHtml(matches);
-
   }
   outputHtml(matches) {
     if (matches.length === 0) return
     this.matchList.innerHTML = ""
 
-
-
     if (matches.length > 5) {
       const firstResults = matches.slice(0, 5)
       firstResults.forEach(city => {
-        const link = document.createElement("a")
-        link.href = "#"
-        link.id = city.id
-        link.innerText = `${city.name} - ${city.state}`
-        link.className = "list-group-item list-group-item-action"
-
-        const handler = e => this.handleClick(e, city)
-        link.addEventListener("click", handler)
-        this.matchList.appendChild(link)
-
+        this.createLi(city)
       });
 
     } else {
       matches.forEach(city => {
-        const link = document.createElement("a")
-        link.href = "#"
-        link.id = city.id
-        link.innerText = `${city.name} - ${city.state}`
-        link.className = "list-group-item list-group-item-action "
-
-        const handler = e => this.handleClick(e, city)
-        link.addEventListener("click", handler)
-        this.matchList.appendChild(link)
+        this.createLi(city)
       })
     }
   }
 
-  async handleClick(e, city) {
-    e.preventDefault()
-    this.searchBox.value = `${city.name} - ${city.state}`;
-
-    this.cityCode.value = city.id;
-    this.cityName.value = `${city.name} - ${city.state}`;
-    this.matchList.innerHTML = "";
-    this.map.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=${city.name}`
-
-    const data = {
-      search: this.searchBox.value,
-      city_code: this.cityCode.value,
-      city_name: this.cityName.value
-    }
-    this.loadingModalBtn.click()
-    this.searchBox.value = "";
-    setTimeout(() => this.submitForm(data), 3000);
-
+  createLi(city) {
+    const li = document.createElement("li")
+    li.id = city.id
+    li.innerText = `${city.name} - ${city.state}`
+    li.dataset.cityName = city.name
+    li.className = "list-group-item list-group-item-action"
+    this.matchList.appendChild(li)
   }
 
-  async submitForm(data) {
 
-    axios.post(BASE_URL, data,
-      {
-        headers: {
-          'X-CSRFToken': this.token
-        }
-      }).then((response) => {
+  handleClick(e) {
+    if (e.target.className = "list-group-item list-group-item-action") {
+      const cityName = e.target.dataset.cityName
+      const data = {
+        city_code: e.target.id,
+        city_name: cityName
+      }
+      this.map.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=${cityName}`
+      this.searchBox.value = ""
+      this.matchList.innerHTML = "";
+      this.loadingModalBtn.click()
+      setTimeout(() => this.submitForm("post", "/", data), 2000);
+    }
+  }
+
+  async submitForm(method, endpoint, data) {
+
+    axios({
+      method: method,
+      url: BASE_URL.concat(endpoint),
+      data: data,
+      headers: {
+        'X-CSRFToken': this.token
+      }
+    }).then((response) => {
+      if (response.data.status === "ok") {
         this.loadingModalBtn.click()
         this.filterBtn.click()
-      }, (error) => {
-        console.log(error.response.data);
-      });
-  }
+      }
 
+    }, (error) => {
+      console.log(error.response.data);
+    })
+  }
 }
 
 class ResultsTable {

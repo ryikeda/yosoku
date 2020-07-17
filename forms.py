@@ -7,7 +7,7 @@ from models import db, User
 
 class SearchForm(FlaskForm):
     """Form for searching cities"""
-    search = StringField("search", validators=[InputRequired()])
+    search = StringField("search")
     city_code = HiddenField("city_code", validators=[InputRequired()])
     city_name = HiddenField("city_name", validators=[InputRequired()])
 

@@ -33,16 +33,16 @@ def index():
     form = SearchForm()
 
     if form.validate_on_submit():
+        print("form validated -----------------")
         city_code = form.city_code.data
         city_name = form.city_name.data
         model = utils.load_model(city_code)
         session["city_code"] = city_code
         session["city_name"] = city_name
-        print(city_name)
-        print(city_code)
 
-        return jsonify(data="ok")
+        return jsonify(status="ok")
     else:
+        print("Not validated --------------------")
         return render_template(
             "home.html", form=form)
 

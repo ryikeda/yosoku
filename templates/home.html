@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="container mt-5">
-  <form id="search-form" action="/" method="POST">
+  <form id="search-form">
     {{ form.hidden_tag() }}
 
     <div class="row">
@@ -13,13 +13,9 @@
           if field.widget.input_type != 'hidden' %}
 
         {{ field(class_="form-control", placeholder="Search for a city ...") }}
-
-        {% for error in field.errors %}
-        {{ error }}
-        {% endfor %}
         {% endfor %}
 
-        <div id="match-list"></div>
+        <ul id="match-list"></ul>
         <div class="input-group-append">
           <a id="filter-btn" type="button" class="btn btn-outline-info">
             Filters

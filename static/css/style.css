@@ -22,6 +22,10 @@
 #search-div{
   position: relative;
 }
+ul {
+  padding: 0;
+  list-style-type: none;
+}
 
 #match-list{
   position: absolute;
