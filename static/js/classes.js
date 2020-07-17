@@ -184,6 +184,8 @@ class UserForm {
     this.modalBody = document.getElementById("modal-body")
     this.modalBtn = document.getElementById("modal-btn")
 
+    this.userEndpoint = "/user"
+
     this.token = document.getElementById("csrf_token").value
 
     this.navbar.addEventListener("click", (e) => this.handleClick(e))
