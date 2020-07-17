@@ -44,4 +44,4 @@ class DeleteForm(FlaskForm):
 class EditQueryForm(FlaskForm):
     """Delete form"""
     comment = TextAreaField("Comment", validators=[
-        InputRequired(), Length(max=40)])
+        InputRequired(), Length(max=23)])

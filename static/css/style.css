@@ -70,3 +70,7 @@
   border-color: #17a2b8;
   box-shadow: 0 0 0 0.2rem rgba(64, 198, 218, 0.25);
 }
+
+#actions-th{
+  width:80px
+}

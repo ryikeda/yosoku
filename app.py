@@ -70,9 +70,11 @@ def show_filters():
 def get_query_results():
 
     if g.user:
-        results = UserQuery.query.filter_by(user_id=g.user.id).all()
+        results = UserQuery.query.filter_by(
+            user_id=g.user.id).order_by(UserQuery.id.desc()).all()
     else:
-        results = UserQuery.query.filter_by(user_id=1).all()
+        results = UserQuery.query.filter_by(
+            user_id=1).order_by(UserQuery.id.desc()).all()
 
     return render_template("table.html", results=results)
 
