@@ -176,6 +176,7 @@ def signup():
         return render_template('message.html')
 
     else:
+        flash("Sign up to save your queries and add comments")
         return render_template("modal_form.html", form=form, btn=btn)
 
 
