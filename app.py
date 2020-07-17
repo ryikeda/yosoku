@@ -167,14 +167,10 @@ def signup():
     btn = {"id": "signup-btn", "text": "Sign me up!"}
 
     if form.validate_on_submit():
-        try:
-            user = User.signup(username=form.username.data,
-                               password=form.password.data, email=form.email.data)
-            db.session.commit()
 
-        except IntegrityError:
-            # Handle if username aready taken
-            return render_template("/forms/signup_form.html")
+        user = User.signup(username=form.username.data,
+                           password=form.password.data, email=form.email.data)
+        db.session.commit()
 
         flash("User Created! Please login.")
         return render_template('message.html')
