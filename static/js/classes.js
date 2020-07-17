@@ -374,81 +374,108 @@ class ResultsTable {
       console.log(error.response.data);
     })
   }
+
+
 }
 
 class FilterForm {
   constructor() {
-    this.filterBtn = document.getElementById("filter-btn")
-    this.filterModalBody = document.getElementById("filter-modal-body")
 
-    this.type_ = document.getElementById("type_")
-    this.area = document.getElementById("area")
-    this.floor_plan = document.getElementById("floor_plan")
+    this.searchForm = document.getElementById("search-form")
+    this.resultsTable = document.getElementById("results-table")
+
+    this.modal = document.getElementById("modal")
+    this.modalTitle = document.getElementById("modal-title")
+    this.modalBody = document.getElementById("modal-body")
+    this.modalBtn = document.getElementById("modal-btn")
+
+    this.filtersEndpoint = "/filters"
+    this.predictEndpoint = "/predict"
+    this.resultsEndpoint = "/results"
+
     this.token = document.getElementById("csrf_token").value
 
-    this.filterBtn.addEventListener("click", () => this.loadForm())
+    this.searchForm.addEventListener("click", (e) => this.handleClick(e))
+    this.modal.addEventListener("click", (e) => this.handleClick(e))
 
   }
 
-  async loadForm() {
+  handleClick(e) {
 
-    axios.get(BASE_URL.concat("/filters")).then((response) => {
 
-      this.filterModalBody.innerHTML = response.data
+    if (e.target.id === "filter-btn") {
+      this.modalBtn.click()
+      this.modalTitle.innerText = "Filters"
+      this.submitForm("get", this.filtersEndpoint)
+    }
 
-      this.predictBtn = document.getElementById("predict-btn")
-      this.type_ = document.getElementById("type_")
+    //Logic to hide floor area when necessary 
+    if (e.target.id === "type_") {
+      const groupFloorPlan = document.getElementById("group-floor_plan")
+
+      if (e.target.value.includes("Residential")) {
+        groupFloorPlan.classList.add("hide")
+      } else {
+        groupFloorPlan.classList.remove("hide")
+      }
+    }
+
+    if (e.target.id === "predict-btn") {
+      const type_ = document.getElementById("type_")
+      const area = document.getElementById("area")
+      const floor_plan = document.getElementById("floor_plan")
+
+      const data = {
+        type_: type_.value,
+        area: area.value,
+        floor_plan: floor_plan.value,
+      }
+
+      this.submitForm("post", this.predictEndpoint, data)
+    }
+  }
+
+  async submitForm(method, endpoint, data) {
+
+    axios({
+      method: method,
+      url: BASE_URL.concat(endpoint),
+      data: data,
+      headers: {
+        'X-CSRFToken': this.token
+      }
+    }).then((response) => {
+      this.modalBody.innerHTML = response.data
       this.displayFields()
-      this.predictBtn.addEventListener("click", (e) => this.submitForm(e))
-      this.type_.addEventListener("click", () => this.displayFields())
+      this.getTable("get", this.resultsEndpoint)
 
     }, (error) => {
-      console.log(error);
-    });
-
+      console.log(error.response.data);
+    })
   }
+
 
   displayFields() {
+    const type_ = document.getElementById("type_")
     const groupFloorPlan = document.getElementById("group-floor_plan")
 
-    if (this.type_.value.includes("Residential")) {
+    if (type_ && type_.value.includes("Residential")) {
       groupFloorPlan.classList.add("hide")
-    } else {
-      groupFloorPlan.classList.remove("hide")
     }
-
   }
 
-  async submitForm(e) {
-    e.preventDefault();
+  async getTable(method, endpoint) {
 
-    const data = {
-      type_: type_.value,
-      area: area.value,
-      floor_plan: floor_plan.value,
-    }
-
-    axios.post(BASE_URL.concat("/predict"), data,
-      {
-        headers: {
-          'X-CSRFToken': this.token
-        }
-      }).then((response) => {
-        this.filterModalBody.innerHTML = response.data
-        this.predictBtn = document.getElementById("predict-btn")
-        this.displayFields()
-        this.type_ = document.getElementById("type_")
-        this.type_.addEventListener("click", () => this.displayFields())
-
-
-
-        if (this.predictBtn) {
-          this.predictBtn.addEventListener("click", (e) => this.submitForm(e))
-        }
-
-      }, (error) => {
-        console.log(error);
-      });
+    axios({
+      method: method,
+      url: BASE_URL.concat(endpoint),
+      headers: {
+        'X-CSRFToken': this.token
+      }
+    }).then((response) => {
+      this.resultsTable.innerHTML = response.data
+    }, (error) => {
+      console.log(error.response.data);
+    })
   }
-
 }

@@ -62,7 +62,8 @@ def show_filters():
         return render_template("modal_form.html", form=form, btn=btn, city_name=city_name)
 
     else:
-        return render_template("filters_blank.html")
+        flash("Start by searching for a city ...")
+        return render_template("message.html")
 
 
 @app.route("/results")
