@@ -35,6 +35,7 @@
   cursor: pointer;
 }
 
+
 ::-webkit-scrollbar {
   display: none;
 }
@@ -85,4 +86,7 @@
 
 .fa-linkedin{
   color: #0e76a8;
+}
+.footer{
+  color: white;
 }
