@@ -74,3 +74,9 @@
 #actions-th{
   width:80px
 }
+
+#user-btn{
+  background-color: rgb(168, 65, 65); 
+  border-color: rgb(168, 65, 65);
+  box-shadow: 0 0 0 0.2rem rgba(168, 65, 65, 0.25);
+}

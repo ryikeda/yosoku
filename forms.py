@@ -64,3 +64,7 @@ class EditQueryForm(FlaskForm):
     """Delete form"""
     comment = TextAreaField("Comment", validators=[
         InputRequired(), Length(max=23)])
+
+
+class BlankForm(FlaskForm):
+    """Blank form"""

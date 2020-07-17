@@ -15,8 +15,7 @@
 
 <nav id="navbar" class="navbar navbar-expand-md navbar-dark bg-dark">
   <div class="container">
-    <a class="navbar-brand" href="#"><img src="/static/img/icon_static.png" width="25" height="25"
-        class="d-inline-block align-center" alt=""></a>
+    <a class="navbar-brand" href="/"><img src="/static/img/logo.png" width="100"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
       aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -36,13 +35,13 @@
             Sign Up</a>
         </li>
         {% else %}
-
         <li class="nav-item"></li>
         <a id="nav-about" class="nav-link text-white">About</a>
         </li>
+
         <li class="nav-item">
-          <a id="nav-logout" class="nav-link" data-toggle="modal" data-target="#logout-modal">
-            (logout)</a>
+          <a id="nav-logout" class="nav-link">
+            <span id="nav-user" class="text-white">{{g.user.username}}</span> (logout)</a>
         </li>
         {% endif %}
       </ul>

@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, jsonify, redirect, session, m
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_wtf.csrf import CSRFProtect
 from models import db, connect_db, User, UserQuery
-from forms import SearchForm, FilterForm, SignupForm, LoginForm, LogoutForm, DeleteForm, EditQueryForm
+from forms import SearchForm, FilterForm, SignupForm, LoginForm, LogoutForm, DeleteForm, EditQueryForm, BlankForm
 from flask import send_from_directory
 import utils
 from sqlalchemy.exc import IntegrityError
@@ -176,6 +176,27 @@ def signup():
         return render_template('message.html')
 
     else:
+        return render_template("modal_form.html", form=form, btn=btn)
+
+
+@app.route("/user", methods=["GET", "POST"])
+def user_details():
+
+    form = BlankForm()
+    btn = {"id": "user-btn", "text": "Delete Account!"}
+    user = User.query.get(session[CURR_USER_KEY])
+
+    if form.validate_on_submit():
+
+        db.session.delete(user)
+        db.session.commit()
+
+        flash("User Deleted!")
+        return render_template('message.html')
+
+    else:
+        flash(f"{user.username}")
+        flash(f"{user.email}")
         return render_template("modal_form.html", form=form, btn=btn)
 
 
