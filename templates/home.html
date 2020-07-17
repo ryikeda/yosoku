@@ -40,41 +40,19 @@
     frameborder="0" style="border:0" allowfullscreen></iframe>
 </div>
 
-<!-- Filter Modal -->
-<!-- <div class="modal fade" id="filter-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Filters</h5>
-        <button type="button" class="close" data-dismiss="modal">
-          x</button>
-      </div>
-      <div id="filter-modal-body" class="modal-body">
-        <div id="loading">
-          <p class="text-center"> Training Models</p>
-          <p class="text-center"><img src="/static/img/loading_icon.gif"></p>
-          <p class="text-center"> Please wait!</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
-<!-- Filter Modal -->
-
 
 <!-- Loading Modal -->
-
-<button id="loading-modal-btn" type="button" class="btn btn-primary hide" data-toggle="modal"
-  data-target="#loading-modal">
+<button id="loading-modal-btn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#loading-modal">
 </button>
 <div class="modal fade" id="loading-modal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-body">
-        <div id="loading">
-          <p class="text-center"> Training Models</p>
-          <p class="text-center"><img src="/static/img/loading_icon.gif"></p>
-          <p class="text-center"> Please wait!</p>
+        <div id="loading" class="text-center">
+          <h2> Training Models</h2>
+          <img src="/static/img/loading_icon.gif">
+          <h6> Please wait!</h6>
+          <small>This could take few minutes, for bigger cities</small>
         </div>
       </div>
     </div>
