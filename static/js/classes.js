@@ -266,23 +266,24 @@ class SearchForm {
     if (matches.length > 5) {
       const firstResults = matches.slice(0, 5)
       firstResults.forEach(city => {
-        this.createLi(city)
+        this.createItem(city)
       });
 
     } else {
       matches.forEach(city => {
-        this.createLi(city)
+        this.createItem(city)
       })
     }
   }
 
-  createLi(city) {
-    const li = document.createElement("li")
-    li.id = city.id
-    li.innerText = `${city.name} - ${city.state}`
-    li.dataset.cityName = city.name
-    li.className = "list-group-item list-group-item-action"
-    this.matchList.appendChild(li)
+  createItem(city) {
+    const item = document.createElement("a")
+    item.id = city.id
+    item.href = "#"
+    item.innerText = `${city.name} - ${city.state}`
+    item.dataset.cityName = city.name
+    item.className = "list-group-item list-group-item-action"
+    this.matchList.appendChild(item)
   }
 
 

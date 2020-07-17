@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="container mt-5">
-  <form id="search-form">
+  <div id="search-form">
     {{ form.hidden_tag() }}
 
     <div class="row">
@@ -15,20 +15,20 @@
         {{ field(class_="form-control", placeholder="Search for a city ...") }}
         {% endfor %}
 
-        <ul id="match-list"></ul>
+        <div id="match-list"></div>
         <div class="input-group-append">
           <a id="filter-btn" type="button" class="btn btn-outline-info">
             Filters
           </a>
         </div>
       </div>
-  </form>
-</div>
-
-<div id="table-wrapper" class="mt-5">
-  <div id="results-table" class="row">
+    </div>
   </div>
-</div>
+
+  <div id="table-wrapper" class="mt-5">
+    <div id="results-table" class="row">
+    </div>
+  </div>
 </div>
 
 <div class="map-responsive mt-5">

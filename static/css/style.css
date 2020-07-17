@@ -22,10 +22,6 @@
 #search-div{
   position: relative;
 }
-ul {
-  padding: 0;
-  list-style-type: none;
-}
 
 #match-list{
   position: absolute;
@@ -35,7 +31,7 @@ ul {
   z-index: 11;
 }
 
-.nav-link, .fas, .fab, #api-img{
+.nav-link, .fas, .fab, #api-img, .list-group-item{
   cursor: pointer;
 }
 
@@ -86,7 +82,6 @@ ul {
   border-color: rgb(168, 65, 65);
   box-shadow: 0 0 0 0.2rem rgba(168, 65, 65, 0.25);
 }
-
 
 .fa-linkedin{
   color: #0e76a8;
