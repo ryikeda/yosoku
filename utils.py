@@ -3,37 +3,20 @@ from models import db, Query
 
 
 def load_model(city_code):
-  #check database, if not found make api call
+    # check database, if not found make api call
 
-  print("loding model ***********************************")
-  model = Query.query.filter_by(city_code=city_code).first()
+    print("loding model ***********************************")
+    model = Query.query.filter_by(city_code=city_code).first()
 
-  if not model:
-    print("api call ***********************************")
-    dataset = Dataset(city_code)
-    model = PricePredictionModel(dataset)
+    if not model:
+        print("api call ***********************************")
+        dataset = Dataset(city_code)
+        model = PricePredictionModel(dataset)
 
-    model = Query(city_code=model.city_code, model=model)
+        model = Query(city_code=model.city_code, model=model)
 
-    db.session.add(model)
-    db.session.commit()
+        db.session.add(model)
+        db.session.commit()
 
-  print("model loaded ***********************************")
-  return model 
-
-
-def load_model_from_API(city_code):
-  
-  print("api call ***********************************")
-  dataset = Dataset(city_code)
-  model = PricePredictionModel(dataset)
-
-  model = Query(city_code=model.city_code, model=model)
-
-  db.session.add(model)
-  db.session.commit()
-
-  print("model loaded ***********************************")
-  return model 
-
-
+    print("model loaded ***********************************")
+    return model

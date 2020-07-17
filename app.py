@@ -1,10 +1,10 @@
 import os
 import requests
-from flask import Flask, render_template, request, jsonify, redirect, session, make_response, flash, url_for, g
+from flask import Flask, render_template, request, jsonify, redirect, session, flash, g
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_wtf.csrf import CSRFProtect
 from models import db, connect_db, User, UserQuery
-from forms import SearchForm, FilterForm, SignupForm, LoginForm, LogoutForm, DeleteForm, EditQueryForm, BlankForm
+from forms import SearchForm, FilterForm, SignupForm, LoginForm, EditQueryForm, BlankForm
 from flask import send_from_directory
 import utils
 from sqlalchemy.exc import IntegrityError
@@ -38,6 +38,8 @@ def index():
         model = utils.load_model(city_code)
         session["city_code"] = city_code
         session["city_name"] = city_name
+        print(city_name)
+        print(city_code)
 
         return jsonify(data="ok")
     else:
@@ -113,14 +115,13 @@ def filter():
         return render_template("message.html")
 
     else:
-        print("Form not being validated -----------------")
         return render_template("modal_form.html", form=form, city_name=city_name, btn=btn)
 
 
 @app.route("/delete/query", methods=["GET", "POST"])
 def delete_query():
 
-    form = DeleteForm()
+    form = BlankForm()
     btn = {"id": "delete-query-btn", "text": "Delete!"}
     if form.validate_on_submit():
         query_id = int(request.get_json()["queryId"])
@@ -181,7 +182,7 @@ def signup():
 
 
 @app.route("/user", methods=["GET", "POST"])
-def user_details():
+def delete_user():
 
     form = BlankForm()
     btn = {"id": "user-btn", "text": "Delete Account!"}
@@ -227,7 +228,7 @@ def login():
 @app.route("/logout", methods=["GET", "POST"])
 def logout():
     """Handle logout of user"""
-    form = LogoutForm()
+    form = BlankForm()
     btn = {"id": "logout-btn", "text": "Logout!"}
 
     if form.validate_on_submit():
@@ -236,6 +237,13 @@ def logout():
         return render_template("message.html")
 
     return render_template("modal_form.html", form=form, btn=btn)
+
+
+@app.route("/about")
+def show_about():
+    """Displays about page"""
+
+    return render_template("about.html")
 
 
 @app.before_request

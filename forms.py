@@ -52,14 +52,6 @@ class LoginForm(FlaskForm):
         "Password must be at least 6 characters long."), Length(min=6)])
 
 
-class LogoutForm(FlaskForm):
-    """Logout form"""
-
-
-class DeleteForm(FlaskForm):
-    """Delete form"""
-
-
 class EditQueryForm(FlaskForm):
     """Delete form"""
     comment = TextAreaField("Comment", validators=[

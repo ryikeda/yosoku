@@ -1,5 +1,5 @@
 import {
-  LoginForm, LogoutForm, SignupForm, SearchForm, ResultsTable, FilterForm, UserForm
+  LoginForm, LogoutForm, SignupForm, SearchForm, ResultsTable, FilterForm, UserForm, AboutModal
 } from "./classes.js"
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -11,6 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
   new ResultsTable()
   new FilterForm()
   new UserForm()
-
+  new AboutModal()
 })
 
