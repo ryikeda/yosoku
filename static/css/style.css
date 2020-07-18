@@ -80,7 +80,11 @@
 #delete-query-btn{
   background-color: rgb(168, 65, 65); 
   border-color: rgb(168, 65, 65);
-  box-shadow: 0 0 0 0.2rem rgba(168, 65, 65, 0.25);
+  /* box-shadow: 0 0 0 0.2rem rgba(168, 65, 65, 0.25); */
+}
+#delete-query-btn:hover,
+#user-btn:hover{
+  background-color:  rgb(148, 56, 56); ; 
 }
 
 .fa-linkedin{
