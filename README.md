@@ -1,10 +1,14 @@
-# Yosoku
+![](static/img/logo.png)
 
-A single-page web application that predicts real estate prices in Japan
+A single-page web application that uses machine learning models to predict real estate prices in Japan
+
+## Technologies Used
+
+Python/Flask, PostgreSQL, SQLAlchemy, Heroku, Jinja, RESTful APIs, JavaScript, HTML and Bootstrap4
 
 ## API Link:
 
-https://www.land.mlit.go.jp/webland/api.html
+https://www.land.mlit.go.jp/webland/
 
 ## Database Schema
 
