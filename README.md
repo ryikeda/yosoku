@@ -1,4 +1,4 @@
-![](static/img/logo.png)
+# Yosoku
 
 A single-page web application that uses machine learning models to predict real estate prices in Japan
 
