@@ -6,7 +6,7 @@ from flask_wtf.csrf import CSRFProtect
 from models import db, connect_db, User, UserQuery
 from forms import SearchForm, FilterForm, SignupForm, LoginForm, EditQueryForm, BlankForm
 from flask import send_from_directory
-import utils
+from utils import load_model
 from sqlalchemy.exc import IntegrityError
 
 CURR_USER_KEY = "curr_user"
@@ -35,7 +35,7 @@ def index():
     if form.validate_on_submit():
         city_code = form.city_code.data
         city_name = form.city_name.data
-        model = utils.load_model(city_code)
+        model = load_model(city_code)
         session["city_code"] = city_code
         session["city_name"] = city_name
 
@@ -53,7 +53,7 @@ def show_filters():
 
     if city_code and city_name:
         form = FilterForm()
-        model = utils.load_model(city_code)
+        model = load_model(city_code)
         btn = {"id": "predict-btn", "text": "Predict Price!"}
         form.type_.choices = [(choice, choice) for choice in model.model.type_]
         form.floor_plan.choices = [(floor_plan, floor_plan)

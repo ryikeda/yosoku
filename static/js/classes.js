@@ -1,6 +1,6 @@
 export { LoginForm, LogoutForm, SignupForm, SearchForm, ResultsTable, FilterForm, UserForm, AboutModal, BASE_URL };
 
-const BASE_URL = "https://yosoku-app-ry.herokuapp.com/"
+const BASE_URL = "http://127.0.0.1:5000"
 
 class SignupForm {
   constructor() {
