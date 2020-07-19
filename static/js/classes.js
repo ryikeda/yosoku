@@ -310,7 +310,6 @@ class SearchForm {
         method: "get",
         url: BASE_URL.concat("/status")
       }).then((response) => {
-        console.log(response.data)
         if (response.data === "SUCCESS") {
           this.loadingModalBtn.click()
           this.filterBtn.click()

@@ -70,8 +70,8 @@ def index():
 @app.route("/filters", methods=["GET", "POST"])
 def show_filters():
 
-    city_code = session["city_code"]
-    city_name = session["city_name"]
+    city_code = session.get("city_code")
+    city_name = session.get("city_name")
 
     if city_code and city_name:
         form = FilterForm()
@@ -90,7 +90,7 @@ def show_filters():
 
 @app.route("/status")
 def check_status():
-    task_id = session["task_id"]
+    task_id = session.get("task_id")
     if task_id:
         task = delegate.AsyncResult(task_id=task_id)
         status = task.status
@@ -115,8 +115,8 @@ def get_query_results():
 def filter():
     form = FilterForm()
 
-    city_code = session["city_code"]
-    city_name = session["city_name"]
+    city_code = session.get("city_code")
+    city_name = session.get("city_name")
 
     model = load_model(city_code)
     btn = {"id": "predict-btn", "text": "Predict Price!"}
