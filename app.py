@@ -7,7 +7,8 @@ from models import db, connect_db, User, UserQuery
 from forms import SearchForm, FilterForm, SignupForm, LoginForm, EditQueryForm, BlankForm
 from flask import send_from_directory
 from utils import load_model
-from sqlalchemy.exc import IntegrityError
+from celery import Celery
+
 
 CURR_USER_KEY = "curr_user"
 
@@ -21,10 +22,30 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "Thisisasecretkey")
+
+app.config['CELERY_RESULT_BACKEND'] = (
+    os.environ.get('REDIS_URL', "redis://localhost:6379"))
+app.config['CELERY_BROKER_URL'] = (
+    os.environ.get('REDIS_URL', "redis://localhost:6379"))
+
+
 # toolbar = DebugToolbarExtension(app)
 connect_db(app)
 
+celery = Celery(
+    app.import_name,
+    backend=app.config['CELERY_RESULT_BACKEND'],
+    broker=app.config['CELERY_BROKER_URL']
+)
+
 ############################################################
+
+
+@celery.task()
+def delegate(city_code):
+
+    load_model(city_code)
+    return "Model Loaded!"
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -35,11 +56,12 @@ def index():
     if form.validate_on_submit():
         city_code = form.city_code.data
         city_name = form.city_name.data
-        model = load_model(city_code)
         session["city_code"] = city_code
         session["city_name"] = city_name
+        task = delegate.delay(city_code)
+        session["task_id"] = task.task_id
 
-        return jsonify(status="ok")
+        return jsonify(status="Request Accepted!")
     else:
         return render_template(
             "home.html", form=form)
@@ -66,6 +88,16 @@ def show_filters():
         return render_template("message.html")
 
 
+@app.route("/status")
+def check_status():
+    task_id = session["task_id"]
+    if task_id:
+        task = delegate.AsyncResult(task_id=task_id)
+        status = task.status
+        return status
+    return "No status"
+
+
 @app.route("/results")
 def get_query_results():
 
@@ -86,7 +118,7 @@ def filter():
     city_code = session["city_code"]
     city_name = session["city_name"]
 
-    model = utils.load_model(city_code)
+    model = load_model(city_code)
     btn = {"id": "predict-btn", "text": "Predict Price!"}
     form.type_.choices = [(choice, choice) for choice in model.model.type_]
     form.floor_plan.choices = [(floor_plan, floor_plan)

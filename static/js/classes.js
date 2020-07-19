@@ -299,9 +299,27 @@ class SearchForm {
       this.map.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=${cityName}`
       this.searchBox.value = ""
       this.matchList.innerHTML = "";
-      this.loadingModalBtn.click()
-      setTimeout(() => this.submitForm("post", "/", data), 2000);
+      this.submitForm("post", "/", data)
+      this.displayModal()
     }
+  }
+  displayModal() {
+    this.loadingModalBtn.click()
+    const timer = setInterval(() => {
+      axios({
+        method: "get",
+        url: BASE_URL.concat("/status")
+      }).then((response) => {
+        console.log(response.data)
+        if (response.data === "SUCCESS") {
+          this.loadingModalBtn.click()
+          this.filterBtn.click()
+          clearInterval(timer)
+        }
+      }, (error) => {
+        console.log(error.response.data);
+      })
+    }, 5000);
   }
 
   async submitForm(method, endpoint, data) {
@@ -314,11 +332,6 @@ class SearchForm {
         'X-CSRFToken': this.token
       }
     }).then((response) => {
-      if (response.data.status === "ok") {
-        this.loadingModalBtn.click()
-        this.filterBtn.click()
-      }
-
     }, (error) => {
       console.log(error.response.data);
     })
