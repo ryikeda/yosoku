@@ -1,16 +1,21 @@
 import {
-  LoginForm, LogoutForm, SignupForm, SearchForm, ResultsTable, FilterForm, UserForm, AboutModal
-} from "./classes.js"
+  LoginForm,
+  LogoutForm,
+  SignupForm,
+  SearchForm,
+  ResultsTable,
+  FilterForm,
+  UserForm,
+  AboutModal,
+} from "./classes.js";
 
-document.addEventListener('DOMContentLoaded', function () {
-
-  new LoginForm()
-  new LogoutForm()
-  new SignupForm()
-  new SearchForm()
-  new ResultsTable()
-  new FilterForm()
-  new UserForm()
-  new AboutModal()
-})
-
+document.addEventListener("DOMContentLoaded", function () {
+  new LoginForm();
+  new LogoutForm();
+  new SignupForm();
+  new SearchForm();
+  new ResultsTable();
+  new FilterForm();
+  new UserForm();
+  new AboutModal();
+});
