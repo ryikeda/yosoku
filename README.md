@@ -1,6 +1,10 @@
-# Yosoku
+## Yosoku
 
 A single-page web application that uses machine learning models to predict real estate prices in Japan
+
+## Live Version
+
+https://yosoku-app-ry.herokuapp.com/
 
 ## Technologies Used
 
