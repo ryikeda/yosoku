@@ -4,7 +4,7 @@ A single-page web application that uses machine learning models to predict real 
 
 ## Technologies Used
 
-Python/Flask, PostgreSQL, SQLAlchemy, Heroku, Jinja, RESTful APIs, JavaScript, HTML and Bootstrap4
+Python/Flask, PostgreSQL, SQLAlchemy, Heroku, Jinja, RESTful APIs, JavaScript, Redis, flask-celery, HTML and Bootstrap4
 
 ## API Link:
 
