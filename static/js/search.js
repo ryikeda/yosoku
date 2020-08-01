@@ -15,7 +15,7 @@ class SearchForm {
     this.matchList.addEventListener("click", (e) => this.handleClick(e));
   }
 
-  async searchCity(cityName) {
+  searchCity(cityName) {
     const res = await fetch("/static/resources/all_cities.json");
     const cities = await res.json();
 
@@ -93,7 +93,7 @@ class SearchForm {
     }, 5000);
   }
 
-  async submitForm(method, endpoint, data) {
+  submitForm(method, endpoint, data) {
     axios({
       method: method,
       url: endpoint,

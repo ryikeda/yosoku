@@ -17,7 +17,7 @@ class ResultsTable {
     this.modal.addEventListener("click", (e) => this.handleClick(e));
   }
 
-  async getTable() {
+  getTable() {
     axios({
       method: "get",
       url: "/results",
@@ -69,7 +69,7 @@ class ResultsTable {
     }
   }
 
-  async submitForm(method, endpoint, data) {
+  submitForm(method, endpoint, data) {
     axios({
       method: method,
       url: endpoint,

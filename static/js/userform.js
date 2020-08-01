@@ -29,7 +29,7 @@ class UserForm {
     }
   }
 
-  async submitForm(method, endpoint, data) {
+  submitForm(method, endpoint, data) {
     axios({
       method: method,
       url: endpoint,

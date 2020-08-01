@@ -51,7 +51,7 @@ class FilterForm {
     }
   }
 
-  async submitForm(method, endpoint, data) {
+  submitForm(method, endpoint, data) {
     axios({
       method: method,
       url: endpoint,
@@ -80,7 +80,7 @@ class FilterForm {
     }
   }
 
-  async getTable(method, endpoint) {
+  getTable(method, endpoint) {
     axios({
       method: method,
       url: endpoint,

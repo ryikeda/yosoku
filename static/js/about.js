@@ -33,7 +33,7 @@ class AboutModal {
     }
   }
 
-  async submitForm(method, endpoint) {
+  submitForm(method, endpoint) {
     axios({
       method: method,
       url: endpoint,
