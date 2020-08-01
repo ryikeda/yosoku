@@ -7,11 +7,7 @@ export {
   FilterForm,
   UserForm,
   AboutModal,
-  BASE_URL,
 };
-
-// const BASE_URL = "http://127.0.0.1:5000";
-const BASE_URL = "https://yosoku-app-ry.herokuapp.com/";
 
 class SignupForm {
   constructor() {
@@ -56,7 +52,7 @@ class SignupForm {
   async submitForm(method, endpoint, data) {
     axios({
       method: method,
-      url: BASE_URL.concat(endpoint),
+      url: endpoint,
       data: data,
       headers: {
         "X-CSRFToken": this.token,
@@ -114,7 +110,7 @@ class LoginForm {
   async submitForm(method, endpoint, data) {
     axios({
       method: method,
-      url: BASE_URL.concat(endpoint),
+      url: endpoint,
       data: data,
       headers: {
         "X-CSRFToken": this.token,
@@ -167,7 +163,7 @@ class LogoutForm {
   async submitForm(method, endpoint, data) {
     axios({
       method: method,
-      url: BASE_URL.concat(endpoint),
+      url: endpoint,
       data: data,
       headers: {
         "X-CSRFToken": this.token,
@@ -220,7 +216,7 @@ class UserForm {
   async submitForm(method, endpoint, data) {
     axios({
       method: method,
-      url: BASE_URL.concat(endpoint),
+      url: endpoint,
       data: data,
       headers: {
         "X-CSRFToken": this.token,
@@ -318,7 +314,7 @@ class SearchForm {
     const timer = setInterval(() => {
       axios({
         method: "get",
-        url: BASE_URL.concat("/status"),
+        url: "/status",
       }).then(
         (response) => {
           if (response.data === "SUCCESS") {
@@ -337,7 +333,7 @@ class SearchForm {
   async submitForm(method, endpoint, data) {
     axios({
       method: method,
-      url: BASE_URL.concat(endpoint),
+      url: endpoint,
       data: data,
       headers: {
         "X-CSRFToken": this.token,
@@ -373,7 +369,7 @@ class ResultsTable {
   async getTable() {
     axios({
       method: "get",
-      url: BASE_URL.concat("/results"),
+      url: "/results",
       headers: {
         "X-CSRFToken": this.token,
       },
@@ -425,7 +421,7 @@ class ResultsTable {
   async submitForm(method, endpoint, data) {
     axios({
       method: method,
-      url: BASE_URL.concat(endpoint),
+      url: endpoint,
       data: data,
       headers: {
         "X-CSRFToken": this.token,
@@ -500,7 +496,7 @@ class FilterForm {
   async submitForm(method, endpoint, data) {
     axios({
       method: method,
-      url: BASE_URL.concat(endpoint),
+      url: endpoint,
       data: data,
       headers: {
         "X-CSRFToken": this.token,
@@ -529,7 +525,7 @@ class FilterForm {
   async getTable(method, endpoint) {
     axios({
       method: method,
-      url: BASE_URL.concat(endpoint),
+      url: endpoint,
       headers: {
         "X-CSRFToken": this.token,
       },
@@ -582,7 +578,7 @@ class AboutModal {
   async submitForm(method, endpoint) {
     axios({
       method: method,
-      url: BASE_URL.concat(endpoint),
+      url: endpoint,
     }).then(
       (response) => {
         this.modalBody.innerHTML = response.data;
