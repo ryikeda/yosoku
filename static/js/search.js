@@ -15,7 +15,7 @@ class SearchForm {
     this.matchList.addEventListener("click", (e) => this.handleClick(e));
   }
 
-  searchCity(cityName) {
+  async searchCity(cityName) {
     const res = await fetch("/static/resources/all_cities.json");
     const cities = await res.json();
 
